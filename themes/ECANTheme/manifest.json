@@ -1,0 +1,40 @@
+{
+	"name": "ECANTheme",
+	"label": "ECAN Theme",
+	"platform": "HTML",
+	"panels": [
+	  {
+        "name": "TabPanel",
+        "description": "Tab Panel for the sidebar container"
+      }
+	],
+	"styles":[
+	  {
+        "name": "default",
+        "description": "This is the standard branding style",
+        "styleColor": "#007ac2"
+      }
+	],
+	"layouts":[
+	  {
+        "name": "default",
+        "description": "This is the standard left hand panel layout"
+      }
+	],
+	"widgets":[
+	  {
+        "name": "Header",
+        "description": "The header for the ECAN Theme"
+	  },
+	  {
+        "name": "SidebarController",
+        "description": "this is theme widget controller"
+      }
+	],
+	"version":"0.1",
+	"wabVersion":"1.2",
+	"Author":"Environment Canterbury",
+	"Description":"Environment Canterbury basic theme for internal and external use",
+	"copyright":"",
+	"licence":""
+}

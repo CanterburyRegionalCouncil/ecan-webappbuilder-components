@@ -1,14 +1,14 @@
 # ecan-webappbuilder-components #
 Themes and widgets for use with the ESRI ArcGIS WebAppBuilder developed by Environment Canterbury Regional Council.
 
-This repository is broken up into two sections - one for layout **Themes** and one for **Widgets**.  The code has been developed for use with WebAppBuilder version 1.0. 
+This repository is broken up into two sections - one for layout **Themes** and one for **Widgets**.  The code has been developed for use with WebAppBuilder version 1.1. 
 
 ## Themes ##
 
 The following themes are part of the repository:
 
 
-- **ESRI Demo theme** (as contained in WebAppBuilder version 1.0 - included as a template for theme development).
+- **ESRI Demo theme** (as contained in WebAppBuilder version 1.1 - included as a template for theme development).
 
 
 
@@ -17,7 +17,7 @@ The following themes are part of the repository:
  
 The following widgets are part of the repository:
 
-- **ESRI Demo widget** (as contained in WebAppBuilder version 1.0 - included as a template for widget development).
+- **ESRI Demo widget** (as contained in WebAppBuilder version 1.1 - included as a template for widget development).
 
 ### Adding Widgets to WebAppBuilder ###
 

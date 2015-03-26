@@ -1,0 +1,276 @@
+/********************************************************/
+
+/* 
+    20150326 - SED:
+	Duplicated lines 1-71 from ECANTheme\panels\TabPanel\style.css as there
+	appears to be a bug where the stylesheet is not loading.
+	
+	Have copied here so that if this bug is fixed this section can be removed
+	and the stylesheet will be overridden as per normal.
+	
+	The panel styles for the ECAN theme are found in the main section of the css
+	
+*/
+
+/********************************************************/
+
+
+.tab-widget-frame{
+  border: 1px solid transparent;
+}
+.tab-widget-frame .title{
+  overflow: hidden;
+}
+.tab-widget-frame .title-label{
+  height: 20px;
+  padding: 5px 13px;
+  background-color: white;
+  float: left;
+  border-top-left-radius: 4px;
+  color: #222;
+  font: 12px Arial bold;
+  display: inline-block;
+  max-width: 338px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tab-widget-frame .title-angle{
+  width: 21px;
+  height: 20px;
+  background: url(images/tab_triangle.png);
+  float: left;
+}
+.tab-widget-frame .jimu-container{
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+  position: relative;
+  overflow-x: auto;
+}
+.tab-widget-frame .jimu-viewstack {
+  top: 0px;
+}
+.tab-widget-frame .jimu-widget-chart{
+  background-color: #fff;
+}
+
+.jimu-rtl .tab-widget-frame .title-label{
+  float: right;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 0;
+}
+.jimu-rtl .tab-widget-frame .title-angle{
+  background: url(images/tab_triangle_2.png);
+  float: right;
+}
+.jimu-rtl .tab-widget-frame .jimu-container{
+  border-top-left-radius: 4px;
+  border-top-right-radius: 0;
+}
+
+/********************************************************/
+
+
+/* 
+
+	Header Widget Styles
+
+*/
+
+.jimu-widget-header .title{
+	float: left;
+	color: #007ac2;
+	line-height: 44px;
+	font-size: 18px;
+	text-align: center;
+	height: 100%;
+	font-weight: 700;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.jimu-main-bgcolor{
+	background: rgba(255, 255, 255, 0.9);
+	border-bottom: 1px solid #ddd;
+}
+
+.jimu-widget-header .links{
+	height: 100%;
+	margin-right: 141px; /* Change this value depending on number of widget place-holders ~47px per placeholder*/
+}
+
+/*
+
+	Sidebar Widget Styles
+
+*/
+.jimu-widget-sidebar-controller .tab-resizer,
+.jimu-widget-sidebar-controller .other-group-pane,
+.jimu-widget-sidebar-controller .title-list,
+.jimu-widget-sidebar-controller .min-pane{
+	background-color:#5fa8d4;
+}
+
+.jimu-widget-sidebar-controller .other-group-pane,
+.jimu-widget-sidebar-controller .max-pane,
+.jimu-widget-sidebar-controller .tab-resizer,
+.jimu-widget-sidebar-controller .min-pane{
+	border-top: 0px solid #111111;
+	border: 0px solid #111111;
+}
+
+.content-title-bg{
+	display:none;
+}
+
+.jimu-widget-sidebar-controller .content-pane{
+	top:0px;
+}
+
+.jimu-widget-sidebar-controller .max-pane,
+.jimu-widget-sidebar-controller .other-group-pane,
+.jimu-widget-sidebar-controller .min-pane{
+	bottom:14px;
+}
+
+.jimu-widget-sidebar-controller .other-group-pane-title{
+	height:44px;
+	
+}
+
+.jimu-widget-sidebar-controller .other-group-pane-title .text {
+	line-height: 44px;
+	color: #FFF;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.jimu-widget-sidebar-controller .other-group-pane-title .close{	
+	right: 0px;
+	top: 0px;
+	height: 44px;
+}
+
+.jimu-widget-sidebar-controller .other-group-title{
+	font-family: Arial;
+	font-weight:700;
+}
+
+/*
+
+	Tab Panel - 
+
+*/
+.tab-widget-frame .title-angle{
+	display:none;
+}
+
+.tab-widget-frame .title-label {
+	height:27px;
+	line-height: 24px;
+	color: #555;
+	font-family: Arial;
+	font-size: 18px;
+	font-weight:700px;
+}
+
+
+/* 
+
+	MyLocation Widget Styles
+
+*/
+.jimu-widget-mylocation .LocateButton .zoomLocateButton{
+  background-color:#FFF;
+  background-image: url("../../images/locate.png");
+}
+.jimu-widget-mylocation .LocateButton .zoomLocateButton:hover{
+    background-color: #eee;
+	background-image: url("../../images/locateHover.png");
+}
+
+.LocateButton .zoomLocateButton {
+  width: 32px;
+  height: 32px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  border: 1px solid #999;
+}
+
+.jimu-widget-mylocation .place-holder {
+	padding: 2px;
+	width: 30px;
+	height: 30px;
+	background-color: #666;
+	background-color: rgba(102,102,102,0.80);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: pointer;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	border-radius: 5px;
+	background-image: url("images/locate.png");
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+/*
+
+	HomeButton Widget Styles
+
+*/
+
+.jimu-widget-homebutton .HomeButton .home {
+  background-color:#FFF;
+  background-image: url("../../images/home.png");
+}
+.jimu-widget-homebutton .HomeButton .home:hover {
+  background-color: #eee;
+  background-image: url("../../images/homeHover.png");
+}
+
+.jimu-widget-homebutton .HomeButton .home{
+  width: 32px;
+  height: 32px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  border: 1px solid #999;
+} 	
+
+/*
+
+	Geocoder Widget Styles
+
+*/
+
+.jimu-widget-geocoder{
+  border-radius: 0px;
+}
+
+.jimu-widget-geocoder .simpleGeocoder .esriGeocoder {
+  border: 1px solid #999;
+  border-radius: 0px;
+}
+
+.jimu-widget-geocoder .simpleGeocoder .esriGeocoderResults{
+  border: 1px solid #999;
+  border-radius: 0px;
+}

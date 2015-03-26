@@ -1,0 +1,90 @@
+{
+  "widgetOnScreen": {
+    "widgets": [{
+      "uri": "themes/ECANTheme/widgets/Header/Widget",
+      "positionRelativeTo": "browser",
+      "position": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "height": 44
+      },
+      "version": "1.2"
+    },{
+      "uri": "themes/ECANTheme/widgets/SidebarController/Widget",
+      "positionRelativeTo": "browser",
+      "position": {
+        "left": 0,
+        "top": 44,
+        "bottom": 0
+      },
+      "version": "1.2"
+    }, {
+      "uri": "widgets/MyLocation/Widget",
+      "position": {
+        "left": 20,
+        "top": 134
+      }
+    },{
+      "uri": "widgets/HomeButton/Widget",
+      "position": {
+        "left": 20,
+        "top": 175
+      }
+    },{
+      "label": "Overview",
+      "uri": "widgets/OverviewMap/Widget",
+      "position": {
+        "bottom": 0,
+        "left": 0
+      }
+    }, {
+      "uri": "widgets/Geocoder/Widget",
+      "position": {
+        "left": 68,
+        "top": 62
+      }
+    },{
+      "position": {
+        "right": 86,
+        "top": 2,
+        "width": 400,
+        "height": 410
+      }
+    }, {
+      "position": {
+        "right": 44,
+        "top": 2,
+        "width": 380,
+        "height": 410
+      }
+    }, {
+      "position": {
+        "right": 2,
+        "top": 2,
+        "width": 380,
+        "height": 410
+      }
+    }]
+  },
+
+  "map": {
+    "position": {
+      "left": 0,
+      "top": 0,
+      "right": 0,
+      "bottom": 0
+    }
+  },
+  "widgetPool": {
+	"panel": {
+      "uri": "themes/ECANTheme/panels/TabPanel/Panel",
+      "positionRelativeTo": "browser",
+      "position": {
+        "top": 44,
+        "left": 0,
+        "bottom": 22
+      }
+    }
+  }
+}
