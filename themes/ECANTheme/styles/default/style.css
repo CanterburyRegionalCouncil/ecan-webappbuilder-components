@@ -8,7 +8,7 @@
 	Have copied here so that if this bug is fixed this section can be removed
 	and the stylesheet will be overridden as per normal.
 	
-	The panel styles for the ECAN theme are found in the main section of the css
+	The panel rules for the ECAN theme are found in the main section of the css
 	
 */
 
@@ -73,7 +73,7 @@
 
 /* 
 
-	Header Widget Styles
+	Header Widget Rules
 
 */
 
@@ -102,7 +102,7 @@
 
 /*
 
-	Sidebar Widget Styles
+	Sidebar Widget Rules
 
 */
 .jimu-widget-sidebar-controller .tab-resizer,
@@ -159,7 +159,7 @@
 
 /*
 
-	Tab Panel - 
+	Tab Panel Rules
 
 */
 .tab-widget-frame .title-angle{
@@ -175,10 +175,34 @@
 	font-weight:700px;
 }
 
+/* 
+
+	Floating Widget Rules
+
+*/
+
+.jimu-preload-widget-icon-panel{
+	border-radius: 0px;
+}
+
+.jimu-preload-widget-icon-panel .title {
+	background-color: #FFF;
+	border-bottom: 1px solid #eee;
+	color:#777;
+	box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+.jimu-preload-widget-icon-panel>.title>.close-btn {
+  background: url(../../images/close.png) no-repeat center center;
+}
+
+.jimu-preload-widget-icon-panel>.title>.close-btn:Hover {
+  background: url(../../images/closeHover.png) no-repeat center center;
+}
 
 /* 
 
-	MyLocation Widget Styles
+	MyLocation Widget Rules
 
 */
 .jimu-widget-mylocation .LocateButton .zoomLocateButton{
@@ -227,7 +251,7 @@
 
 /*
 
-	HomeButton Widget Styles
+	HomeButton Widget Rules
 
 */
 
@@ -257,7 +281,7 @@
 
 /*
 
-	Geocoder Widget Styles
+	Geocoder Widget Rules
 
 */
 
