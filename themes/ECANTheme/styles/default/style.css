@@ -105,6 +105,8 @@
 	Sidebar Widget Rules
 
 */
+
+.jimu-widget-sidebar-controller,
 .jimu-widget-sidebar-controller .tab-resizer,
 .jimu-widget-sidebar-controller .other-group-pane,
 .jimu-widget-sidebar-controller .title-list,
@@ -112,12 +114,19 @@
 	background-color:#5fa8d4;
 }
 
+.jimu-widget-sidebar-controller .title-list,
 .jimu-widget-sidebar-controller .other-group-pane,
 .jimu-widget-sidebar-controller .max-pane,
 .jimu-widget-sidebar-controller .tab-resizer,
-.jimu-widget-sidebar-controller .min-pane{
+.jimu-widget-sidebar-controller .min-pane,
+.jimu-widget-sidebar-controller .min-pane .title-node:first-child{
 	border-top: 0px solid #111111;
 	border: 0px solid #111111;
+}
+
+.jimu-widget-sidebar-controller .content-node {
+	 outline: 1px solid #FFF;
+	border-top: 1px solid #FFF;
 }
 
 .content-title-bg{
@@ -128,10 +137,18 @@
 	top:0px;
 }
 
+
+
 .jimu-widget-sidebar-controller .max-pane,
 .jimu-widget-sidebar-controller .other-group-pane,
 .jimu-widget-sidebar-controller .min-pane{
-	bottom:14px;
+	bottom: 0;
+	top: 15px;
+}
+
+.jimu-widget-sidebar-controller .tab-resizer {
+	bottom: auto;
+	top: 0;
 }
 
 .jimu-widget-sidebar-controller .other-group-pane-title{
@@ -157,11 +174,17 @@
 	font-weight:700;
 }
 
+
+
 /*
 
 	Tab Panel Rules
 
 */
+
+.tab-widget-frame .title{
+	background-color:#FFF;
+}
 .tab-widget-frame .title-angle{
 	display:none;
 }
