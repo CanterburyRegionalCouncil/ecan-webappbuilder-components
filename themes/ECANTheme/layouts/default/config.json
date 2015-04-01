@@ -65,6 +65,34 @@
         "width": 380,
         "height": 410
       }
+    },{
+      "position": {
+        "left": 70,
+        "top": 105,
+        "width": 400,
+        "height": 410
+      }
+    }, {
+      "position": {
+        "left": 120,
+        "top": 105,
+        "width": 380,
+        "height": 410
+      }
+    }, {
+      "position": {
+        "left": 170,
+        "top": 105,
+        "width": 380,
+        "height": 410
+      }
+    }, {
+      "position": {
+        "left": 220,
+        "top": 105,
+        "width": 380,
+        "height": 410
+      }
     }]
   },
 

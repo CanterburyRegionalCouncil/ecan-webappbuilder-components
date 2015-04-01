@@ -143,7 +143,7 @@
 .jimu-widget-sidebar-controller .other-group-pane,
 .jimu-widget-sidebar-controller .min-pane{
 	bottom: 0;
-	top: 15px;
+	top: 26px;
 }
 
 .jimu-widget-sidebar-controller .tab-resizer {
@@ -174,7 +174,15 @@
 	font-weight:700;
 }
 
+.jimu-widget-sidebar-controller .tab-resizer .action-node div {
+   width:22px;
+   height:16px;
+   margin-top:5px;
+}
 
+.jimu-widget-sidebar-controller .tab-resizer{
+	height:20px;
+}
 
 /*
 
