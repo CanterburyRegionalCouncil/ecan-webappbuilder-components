@@ -9,7 +9,7 @@ define([
 		return declare('ViewController', [], {
 		
 			_viewIds:[],
-			_focusView:null,
+			_focusViewId:null,
 			_focusCSSClass:"view-stack-focus",
 			configureViews:function(viewIds){				
 				this._viewIds = viewIds;
@@ -17,10 +17,6 @@ define([
 			focusView:function(id){
 				this._hideAllViews();
 				this._focusViewById(id);
-				this._focusView = this._getViewFromDomById(id);
-			},
-			getFocusView:function(){
-				return this._focusView;
 			},
 			_hideAllViews:function(){
 				arrayUtil.forEach(this._viewIds, lang.hitch(this, function(id){
@@ -29,6 +25,7 @@ define([
 			},
 			_focusViewById:function(id){
 				domClass.add(id, this._focusCSSClass);
+				this._focusViewId = id;
 			},
 			_getViewFromDomById:function(id){
 				return dom.byId(id);

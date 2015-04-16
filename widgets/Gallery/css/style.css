@@ -1,0 +1,112 @@
+.gallery-widget p{
+	margin:0px;
+}
+
+.gallery-widget div{
+	margin:0px 0px 10px;
+}
+
+.gallery-widget .gallery-search-options .btn-xs{
+	padding:4px;
+	width:32%;
+}
+
+.gallery-widget .breadcrumb{
+	display:none;
+}
+
+.gallery-widget .view-stack{
+	display:none;
+}
+
+.gallery-widget .view-stack-focus{
+	display:inherit;
+}
+
+div.gallery-organisations div, 
+div.gallery-categories div{
+	margin-bottom:0px;
+}
+
+div.gallery-organisations ul, 
+div.gallery-categories ul {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+div.gallery-categories img {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 3px;
+  margin-right: 3px;
+}
+
+div.gallery-categories-category-title {
+  line-height: 32px;
+}
+
+div#searchHome .gallery-results-container{
+	text-align:center;
+}
+
+div#searchHome .gallery-results-container, 
+div#searchHome .caption,
+div#searchHome .gallery-result-image,
+div#searchHome .gallery-result-type,
+div#searchHome .btn-group{
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+div#searchHome .thumbnail{
+	text-align:left;
+}
+
+div#searchHome .gallery-result-info {
+  height: 115px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+div#searchHome h3.gallery-result-title {
+  margin-top: 8px;
+  margin-bottom: 7px;
+  font-size: 18px;
+}
+
+div#searchHome p{
+  margin: 0 0 10px;
+}
+
+div#searchHome .thumbnail.widget-size-medium{
+	display:inline-block;
+	max-width: 190px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+div#searchHome .gallery-result-image {
+	display:none;
+	position:relative;
+}
+
+div#searchHome .gallery-result-image.widget-size-medium{
+	display: block;
+}
+
+div#searchHome .img-responsive{
+	height:119px;
+}
+
+div#searchHome .gallery-result-type{
+  position: absolute;
+  right: 2px;
+  top: 96px;
+  margin: 2px;
+  padding: 2px;
+  background-color: white;
+  color: #005AAB;
+  height: 18px;
+  width: 18px;
+  opacity: 0.65; 
+}

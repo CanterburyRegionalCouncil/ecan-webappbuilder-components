@@ -1,0 +1,5 @@
+{
+  "portalApiUri": "http://test.canterburymaps.govt.nz/portalapi",
+  "pageSize":6,
+  "orderBy":"MostRecent"
+}
