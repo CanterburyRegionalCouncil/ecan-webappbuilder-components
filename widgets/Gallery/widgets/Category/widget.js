@@ -2,10 +2,10 @@ define([
 	'dojo/_base/declare',
 	'dijit/_WidgetBase',
 	'dijit/_TemplatedMixin',
-	'dojo/text!../templates/category.html'
+	'dojo/text!./template/widget.html'
 	],function(declare, _WidgetBase, _TemplatedMixin, widgetTemplate){
 	
-		return declare('CategoryWidget', [_WidgetBase, _TemplatedMixin],{
+		return declare('Category', [_WidgetBase, _TemplatedMixin],{
 			templateString:widgetTemplate,
 			
 			_category:null,

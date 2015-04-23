@@ -6,18 +6,15 @@ define([
 	],function(declare, lang, Evented, esriRequest){
 	
 		return declare('PortalSearch', [Evented], {
-			_uriBase:"",
+			searchUri:"",
+			configUri:"",
 			pageSize:10,
 			orderBy:"MostRecent",
 			
-			constructor:function(uriBase){
-				this._uriBase = uriBase;
-			},
 			requestSearchLinks:function(){
-				var requestUri = this._uriBase + "/TagData";
 				
 				var requestSearchLinksHandle = esriRequest({
-					url:requestUri,
+					url:this.configUri,
 					content:{ f:"json" }
 				});
 
@@ -42,18 +39,18 @@ define([
 			},
 			_requestSearchResults:function(searchParameters){
 				
-				var requestUri = this._uriBase + "?";
+				var requestUri = this.searchUri + "?";
 				requestUri += searchParameters;
-				requestUri += "PageSize=" + this.pageSize;
-				requestUri += "page=1";
-				requestUri += "OrderBy" + this.orderBy;
+				requestUri += "&PageSize=" + this.pageSize;
+				requestUri += "&page=1";
+				requestUri += "&OrderBy=" + this.orderBy;
 				
 				var requestSearchResults = esriRequest({
 					url:requestUri,
 					content:{f:"json"}
 				});
 				
-				requestSearchLinksHandle.then(lang.hitch(this, this._searchResultsRequestResponse), this._searchResultsRequestError);
+				requestSearchResults.then(lang.hitch(this, this._searchResultsRequestResponse), this._searchResultsRequestError);
 			},
 			_searchResultsRequestResponse:function(results){
 				this.emit("onSearchResultsRetreived", results);

@@ -1,5 +1,8 @@
 {
-  "portalApiUri": "http://test.canterburymaps.govt.nz/portalapi",
+  "portalApiUri": "http://test.canterburymaps.govt.nz/portalapi/",
+  "configPath":"TagData",
+  "searchPath":"MapGallerySearch",
   "pageSize":6,
   "orderBy":"MostRecent"
 }
+

@@ -8,12 +8,12 @@ define([
 		'jimu/BaseWidget', 
 		'./js/ViewController',
 		'./js/PortalSearch',
-		'./js/CategoryWidget',
-		'./js/WebMapThumb',
+		'./widgets/Category/widget',
+		'./widgets/Result/widget',
 		'dojo/dom-geometry',
 		'dojo/query',
 	
-	],function(declare, event, lang, arrayUtil, dom, on, BaseWidget, ViewController, PortalSearch, CategoryWidget, WebMapThumb, domGeom, query) {
+	],function(declare, event, lang, arrayUtil, dom, on, BaseWidget, ViewController, PortalSearch, CategoryWidget, Results, domGeom, query) {
   
 		return declare([BaseWidget], {
 			
@@ -28,6 +28,16 @@ define([
 				
 				this._configureSearchElements();
 				this._initiateViewController();
+				
+				var searchHomePanel = dom.byId("searchHome");
+				
+				var searchUri = this.config.portalApiUri + "/" + this.config.searchPath;
+				var resultsHome = new Results();
+				resultsHome.baseUri = searchUri;
+				resultsHome.pageSize = 6;
+				resultsHome.placeAt(searchHomePanel);
+				resultsHome.getAllMapsAndApps();
+				
 				this.resize();
 			},
 			_initiateViewController:function(){
@@ -44,7 +54,11 @@ define([
 			},
 			_configureSearchElements:function(){
 			
-				var portalSearch = new PortalSearch(this.config.portalApiUri);
+				var baseUri = this.config.portalApiUri;
+				
+				var portalSearch = new PortalSearch();
+				portalSearch.configUri = baseUri + "/" + this.config.configPath;
+				portalSearch.searchUri = baseUri + "/" + this.config.searchPath;
 				portalSearch.pageSize = this.config.pageSize;
 				portalSearch.orderBy = this.config.orderBy;
 				
@@ -63,7 +77,10 @@ define([
 				var categoryWidget = new CategoryWidget();
 				categoryWidget.category(category);
 				categoryWidget.placeAt(this._categoryList);
-				categoryWidget.on('categoryClickEvent', this._portalSearch.searchCategory);
+				categoryWidget.on('categoryClickEvent', lang.hitch(this, this._categoryClicked));
+			},
+			_categoryClicked:function(category){
+				this._portalSearch.searchCategory(category);
 			},
 			_configureOrganisations:function(organisations){
 				console.log("Populate Organisations");
