@@ -25,6 +25,13 @@ define([
 				this._webMaps = results.WebMaps;
 				this._displayThumbs();
 				
+				var pagination = new Pagination();
+				pagination.totalResults = results.TotalHits;
+				pagination.resultsPerPage = this.pageSize;
+				pagination.currentPage = this.page;
+				pagination.pagesPerSide = 1;
+				pagination.placeAt(this.domNode, "last");
+				pagination.on("page", lang.hitch(this, this._updateDisplayThumbs));
 			},
 			_displayThumbs:function(){
 				
