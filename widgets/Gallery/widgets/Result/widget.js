@@ -14,6 +14,7 @@ define([
 	
 		return declare('ResultsWidget', [_WidgetBase, _TemplatedMixin, MapGallerySearch],{
 			templateString:widgetTemplate,
+			map:null, 
 			_webMaps:[],
 			_pagination:null,
 			pageSize:0,
@@ -51,10 +52,11 @@ define([
 				
 				if(webItem.Type == "Web Mapping Application"){
 					itemThumb = new AppThumb(this.mapItemUrls, webItem);
-				}else{
+				}else{ //Else it is a web map
 					itemThumb = new MapThumb(this.mapItemUrls, webItem);
+					itemThumb.map = this.map;
 				}
-			
+				
 				itemThumb.placeAt(this._resultsContainer, 'last');
 			},
 			_updateDisplayThumbs:function(/*Event*/ e){

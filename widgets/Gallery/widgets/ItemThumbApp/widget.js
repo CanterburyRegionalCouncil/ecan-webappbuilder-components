@@ -6,12 +6,13 @@ define([
 	],function(declare, _WidgetBase, _TemplatedMixin, widgetTemplate){
 		return declare('ItemThumbMapWidget',[_WidgetBase, _TemplatedMixin],{
 			templateString:widgetTemplate,
+			map:null, 
 			_urls:null,
 			_webApp:null,
 			constructor:function(urls, webApp){
 				
 				this._urls = urls;
-				this._webApp = webApp
+				this._webApp = webApp;
 				this.set("_imageLink", webApp.Url);
 				this.set("_imageSrc", "http://www.arcgis.com/sharing/rest/content/items/" + webApp.Id + "/info/" + webApp.Thumbnail);
 				this.set("_imageAlt", webApp.Title);
@@ -22,7 +23,7 @@ define([
 			},
 			_openDetails:function(/*Event*/ e){
 				e.preventDefault();
-				var url = this._urls.itemDetailsUrl + "?webmap=" + this._webApp.Id
+				var url = this._urls.itemDetailsUrl + "?webmap=" + this._webApp.Id;
 				window.open(url, '_blank');
 			},
 			
