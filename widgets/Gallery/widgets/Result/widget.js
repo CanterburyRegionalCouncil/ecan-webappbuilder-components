@@ -4,6 +4,7 @@ define([
 	'dojo/_base/lang',
 	'dojo/query',
 	'dojo/dom-construct',
+	'dojo/dom-geometry',
 	'dijit/_WidgetBase',
 	'dijit/_TemplatedMixin',
 	'./js/MapGallerySearch',
@@ -11,7 +12,7 @@ define([
 	'./../ItemThumbMap/Widget',
 	'./../ItemThumbApp/Widget',
 	'dojo/text!./template/widget.html',
-	],function(declare, arrayUtil, lang, query, domConstruct, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, MapThumb, AppThumb, widgetTemplate){
+	],function(declare, arrayUtil, lang, query, domConstruct, domGeom, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, MapThumb, AppThumb, widgetTemplate){
 	
 		return declare('ResultsWidget', [_WidgetBase, _TemplatedMixin, MapGallerySearch],{
 			templateString:widgetTemplate,
@@ -51,6 +52,7 @@ define([
 			},
 			_displayThumbs:function(webItems){
 				arrayUtil.forEach(webItems, lang.hitch(this, this._displayThumb));
+				this.resize();
 			},
 			_displayThumb:function(webItem){
 				
@@ -73,6 +75,17 @@ define([
 			},
 			_removeAllThumbs:function(){
 				query('.thumbnail').forEach(domConstruct.destroy);
+			},
+			resize:function(){
+				var widgetPosition = domGeom.position(this.domNode);
+				var nodes = query(".widget-responsive", this.domNode);
+				
+				if(widgetPosition.w > 0 && widgetPosition.w < 404){
+					nodes.removeClass("widget-size-medium");
+				}
+				else if(widgetPosition.w > 405){
+					nodes.addClass("widget-size-medium");
+				}
 			}
 		});
 
