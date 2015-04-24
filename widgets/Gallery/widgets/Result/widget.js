@@ -3,6 +3,7 @@ define([
 	'dojo/_base/array',
 	'dojo/_base/lang',
 	'dojo/query',
+	'dojo/dom-construct',
 	'dijit/_WidgetBase',
 	'dijit/_TemplatedMixin',
 	'./js/MapGallerySearch',
@@ -10,7 +11,7 @@ define([
 	'./../ItemThumbMap/Widget',
 	'./../ItemThumbApp/Widget',
 	'dojo/text!./template/widget.html',
-	],function(declare, arrayUtil, lang, query, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, MapThumb, AppThumb, widgetTemplate){
+	],function(declare, arrayUtil, lang, query, domConstruct, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, MapThumb, AppThumb, widgetTemplate){
 	
 		return declare('ResultsWidget', [_WidgetBase, _TemplatedMixin, MapGallerySearch],{
 			templateString:widgetTemplate,
@@ -19,6 +20,7 @@ define([
 			_pagination:null,
 			pageSize:0,
 			page:1,
+			updatePagination:true,
 			mapItemUrls:null,
 			_resultsContainer:null,
 			startup:function(){
@@ -29,8 +31,12 @@ define([
 				this.requestSearchResults();
 			},
 			searchResultsRequestResponse:function(results){
+				
 				this._displayThumbs(results.WebMaps);
-				this._configurePagination(results.TotalHits);
+				
+				if(this.updatePagination){
+					this._configurePagination(results.TotalHits);
+				}
 			},
 			_configurePagination:function(totalHits){
 				
@@ -40,7 +46,7 @@ define([
 				pagination.currentPage = this.page;
 				pagination.pagesPerSide = 1;
 				pagination.placeAt(this.domNode, "last");
-				pagination.on("page", lang.hitch(this, this._updateDisplayThumbs));
+				pagination.on("page", lang.hitch(this, this._changePage));
 				
 			},
 			_displayThumbs:function(webItems){
@@ -59,8 +65,14 @@ define([
 				
 				itemThumb.placeAt(this._resultsContainer, 'last');
 			},
-			_updateDisplayThumbs:function(/*Event*/ e){
-				console.log("Need to update the thumbs to show page " + e);
+			_changePage:function(/*Event*/ e){
+				this._removeAllThumbs();
+				this.page = e.selectedPage;
+				this.updatePagination = false;
+				this.requestSearchResults();
+			},
+			_removeAllThumbs:function(){
+				query('.thumbnail').forEach(domConstruct.destroy);
 			}
 		});
 
