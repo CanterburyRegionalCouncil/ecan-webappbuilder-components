@@ -10,10 +10,8 @@ define([
 		'./js/PortalSearch',
 		'./widgets/Category/widget',
 		'./widgets/Result/widget',
-		'dojo/dom-geometry',
-		'dojo/query',
 	
-	],function(declare, event, lang, arrayUtil, dom, on, BaseWidget, ViewController, PortalSearch, CategoryWidget, Results, domGeom, query) {
+	],function(declare, event, lang, arrayUtil, dom, on, BaseWidget, ViewController, PortalSearch, CategoryWidget, Results) {
   
 		return declare([BaseWidget], {
 			
@@ -21,6 +19,7 @@ define([
 			_viewController:null,
 			_portalSearch:null,
 			_categoryList:null,
+			_resultsHome:null,
 			startup: function() {
 				this.inherited(arguments);
 				
@@ -32,15 +31,14 @@ define([
 				var searchHomePanel = dom.byId("searchHome");
 				
 				var searchUri = this.config.portalApiUri + "/" + this.config.searchPath;
-				var resultsHome = new Results();
-				resultsHome.baseUri = searchUri;
-				resultsHome.pageSize = 6;
-				resultsHome.mapItemUrls = this.config.mapItemUrls;
-				resultsHome.map = this.map;
-				resultsHome.placeAt(searchHomePanel);
-				resultsHome.getAllMapsAndApps();
+				this._resultsHome = new Results();
+				this._resultsHome.baseUri = searchUri;
+				this._resultsHome.pageSize = 6;
+				this._resultsHome.mapItemUrls = this.config.mapItemUrls;
+				this._resultsHome.map = this.map;
+				this._resultsHome.placeAt(searchHomePanel);
+				this._resultsHome.getAllMapsAndApps();
 				
-				this.resize();
 			},
 			_initiateViewController:function(){
 				var viewsIds = [
@@ -117,15 +115,7 @@ define([
 				this._viewController.focusView('searchResult');
 			},
 			resize: function(){
-				var widgetPosition = domGeom.position(this.domNode);
-				var nodes = query(".widget-responsive", this.domNode);
-				
-				if(widgetPosition.w > 0 && widgetPosition.w < 404){
-					nodes.removeClass("widget-size-medium");
-				}
-				else if(widgetPosition.w > 405){
-					nodes.addClass("widget-size-medium");
-				}
+				this._resultsHome.resize();
 			}		
 	});
 
