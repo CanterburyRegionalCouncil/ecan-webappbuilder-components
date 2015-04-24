@@ -5,11 +5,12 @@ define([
 	'dojo/query',
 	'dijit/_WidgetBase',
 	'dijit/_TemplatedMixin',
-	'./js/MapGallerySearch', //Need to rework this a little.
+	'./js/MapGallerySearch',
 	'./../Pagination/widget',
-	'./../ItemThumb/Widget',
-	'dojo/text!./template/widget.html'
-	],function(declare, arrayUtil, lang, query, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, ItemThumb, widgetTemplate){
+	'./../ItemThumbMap/Widget',
+	'./../ItemThumbApp/Widget',
+	'dojo/text!./template/widget.html',
+	],function(declare, arrayUtil, lang, query, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, MapThumb, AppThumb, widgetTemplate){
 	
 		return declare('ResultsWidget', [_WidgetBase, _TemplatedMixin, MapGallerySearch],{
 			templateString:widgetTemplate,
@@ -17,6 +18,7 @@ define([
 			_pagination:null,
 			pageSize:0,
 			page:1,
+			mapItemUrls:null,
 			_resultsContainer:null,
 			startup:function(){
 				this.inherited(arguments);
@@ -40,11 +42,19 @@ define([
 				pagination.on("page", lang.hitch(this, this._updateDisplayThumbs));
 				
 			},
-			_displayThumbs:function(webMaps){
-				arrayUtil.forEach(webMaps, lang.hitch(this, this._displayThumb));
+			_displayThumbs:function(webItems){
+				arrayUtil.forEach(webItems, lang.hitch(this, this._displayThumb));
 			},
-			_displayThumb:function(webMap){
-				var itemThumb = new ItemThumb();
+			_displayThumb:function(webItem){
+				
+				var itemThumb = null;
+				
+				if(webItem.Type == "Web Mapping Application"){
+					itemThumb = new AppThumb(this.mapItemUrls, webItem);
+				}else{
+					itemThumb = new MapThumb(this.mapItemUrls, webItem);
+				}
+			
 				itemThumb.placeAt(this._resultsContainer, 'last');
 			},
 			_updateDisplayThumbs:function(/*Event*/ e){

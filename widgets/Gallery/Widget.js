@@ -35,6 +35,7 @@ define([
 				var resultsHome = new Results();
 				resultsHome.baseUri = searchUri;
 				resultsHome.pageSize = 6;
+				resultsHome.mapItemUrls = this.config.mapItemUrls;
 				resultsHome.placeAt(searchHomePanel);
 				resultsHome.getAllMapsAndApps();
 				
