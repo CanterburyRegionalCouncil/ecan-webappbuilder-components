@@ -1,0 +1,19 @@
+<div class="thumbnail widget-responsive">
+	<div class="gallery-result-image widget-responsive">
+		<a data-dojo-attach-point="resultLinkNode" href="${_imageLink}" target="_blank">
+			<img data-dojo-attach-point="resultImageNode" class="img-responsive" src="${_imageSrc}" alt="${_imageAlt}">
+			<div class="gallery-result-type glyphicon glyphicon-phone" title="App"></div>
+		</a>
+	</div>
+	<div class="caption">
+		<div class="gallery-result-info">
+			<h3 class="gallery-result-title" data-dojo-attach-point="resultTitleNode">${_title}</h3>
+			<p class="gallery-result-snippet" data-dojo-attach-point="resultTitleSnippet">${_snippet}</p>
+		</div>
+		<div class="btn-group">	
+			<a data-dojo-attach-point="resultOpenButtonNode" href="${_btnLink}" target="_blank" class="btn btn-xs btn-primary" role="button">Open</a>
+		</div>
+		<a data-dojo-attach-event="click:_openDetails" href="#" class="btn btn-xs btn-default" role="button">Details</a>
+		<p></p>
+	<div>
+</div>

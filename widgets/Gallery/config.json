@@ -1,8 +1,13 @@
 {
-  "portalApiUri": "http://test.canterburymaps.govt.nz/portalapi/",
-  "configPath":"TagData",
-  "searchPath":"MapGallerySearch",
-  "pageSize":6,
-  "orderBy":"MostRecent"
+    "portalApiUri": "http://test.canterburymaps.govt.nz/portalapi/",
+    "configPath": "TagData",
+    "searchPath": "MapGallerySearch",
+    "pageSize": 6,
+    "orderBy": "MostRecent",
+    "mapItemUrls": {
+        "basicUrl": "http://drummondprobook/GalleryWidget",
+        "advancedUrl": "http://canterburymaps.govt.nz/AdvancedViewer/",
+        "viewerAGOLUrl": "http://www.arcgis.com/home/webmap/viewer.html",
+        "itemDetailsUrl": "http://canterburymaps.govt.nz/Map/"
+    }
 }
-
