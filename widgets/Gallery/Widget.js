@@ -95,21 +95,25 @@ define([
 				this._viewController.focusView('searchResult');
 			},
 			searchText:function(/* Event */ e){
-				evt.preventDefault();
-				console.log("Search Text");
+				e.preventDefault();
+				alert("Not yet implemented");
+				//console.log("Search Text");
 			},
 			searchHome:function(/* Event */ e){
 				this._viewController.focusView('searchHome');
 			},
 			searchByCategory:function(/* Event */ e){
 				e.preventDefault();
-				this._viewController.focusView('searchByCategory');
+				alert("Not yet implemented");
+				//this._viewController.focusView('searchByCategory');
 			},
 			searchByOrganisation:function(/* Event */ e){
-				this._viewController.focusView('searchByOrganisation');
+				alert("Not yet implemented");
+				//this._viewController.focusView('searchByOrganisation');
 			},
 			searchByTag:function(/* Event */ e){
-				this._viewController.focusView('searchByTag');
+				alert("Not yet implemented");
+				//this._viewController.focusView('searchByTag');
 			},
 			searchResult:function(/* Event */ e){
 				this._viewController.focusView('searchResult');
