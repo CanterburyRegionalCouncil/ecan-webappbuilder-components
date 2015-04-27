@@ -4,7 +4,7 @@ define([
 		'dijit/_TemplatedMixin',
 		'dojo/text!./template/widget.html',
 		'./../Result/widget',
-	], function(declare, _WidgetBase, _TemplatedMixin, widgetTemplate, ResultWidget){
+	], function(declare, _WidgetBase, _TemplatedMixin, widgetTemplate, ResultsWidget){
 		return declare('HomeWidget', [_WidgetBase, _TemplatedMixin], {
 			templateString:widgetTemplate,
 			baseUri:"",
@@ -15,13 +15,13 @@ define([
 			startup:function(){
 				this.inherited(arguments);
 				
-				this._resultsWidget = new ResultWidget();
+				this._resultsWidget = new ResultsWidget();
 				this._resultsWidget.baseUri = this.baseUri;
 				this._resultsWidget.pageSize = this.pageSize;
 				this._resultsWidget.mapItemUrls = this.mapItemUrls;
 				this._resultsWidget.map = this.map;
 				this._resultsWidget.placeAt(this, "last");
-				this._resultsWidget.getAllMapsAndApps();
+				this._resultsWidget.allMapsAndApps();
 			},
 			searchText:function(/* Event */ e){
 				e.preventDefault();

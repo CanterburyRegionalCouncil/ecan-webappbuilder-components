@@ -11,12 +11,12 @@ define([
 			pageSize:6,
 			page:1,
 			orderBy:"MostRecent",
-			requestSearchResults:function(searchParameters){
+			requestSearchResults:function(type, searchText){
 				
 				var requestUri = this.baseUri + "?";
 				
-				if(searchParameters){
-					requestUri += searchParameters + "&";
+				if(searchText){
+					requestUri += "SearchText=[" + type + ":" + searchText + "]&";
 				}
 				
 				requestUri += "PageSize=" + this.pageSize;

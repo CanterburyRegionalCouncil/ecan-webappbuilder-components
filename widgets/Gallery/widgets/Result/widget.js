@@ -18,21 +18,25 @@ define([
 			templateString:widgetTemplate,
 			map:null, 
 			_webMaps:[],
-			_pagination:null,
 			pageSize:0,
 			page:1,
 			updatePagination:true,
 			mapItemUrls:null,
+			type:"",
 			_resultsContainer:null,
 			startup:function(){
 				this.inherited(arguments);
 				this._resultsContainer = query('.gallery-results-container', this.domNode)[0];//only one so grab the first
 			},
-			getAllMapsAndApps:function(){
+			allMapsAndApps:function(){
 				this.requestSearchResults();
+			},
+			searchMapsAndApps:function(searchText){
+				this.requestSearchResults(this.type, searchText);
 			},
 			searchResultsRequestResponse:function(results){
 				
+				this._removeAllThumbs();
 				this._displayThumbs(results.WebMaps);
 				
 				if(this.updatePagination){
@@ -40,6 +44,8 @@ define([
 				}
 			},
 			_configurePagination:function(totalHits){
+				
+				query('.dojoPage', this.domNode).forEach(domConstruct.destroy);
 				
 				var pagination = new Pagination();
 				pagination.totalResults = totalHits;
@@ -74,7 +80,7 @@ define([
 				this.requestSearchResults();
 			},
 			_removeAllThumbs:function(){
-				query('.thumbnail').forEach(domConstruct.destroy);
+				query('.thumbnail', this.domNode).forEach(domConstruct.destroy);
 			},
 			resize:function(){
 				var widgetPosition = domGeom.position(this.domNode);

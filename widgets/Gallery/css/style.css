@@ -24,18 +24,18 @@ div.gallery-categories div{
 	margin-bottom:0px;
 }
 
-ul#container {
+ul.search-item-container {
   list-style-type: none;
   padding-left: 0px;
 }
 
-ul#container img {
+ul.search-item-container img {
   width: 32px;
   height: 32px;
   margin-bottom: 3px;
   margin-right: 3px;
 }
-ul#container div{
+ul.search-item-container div{
 	margin-bottom:0px;
 }
 

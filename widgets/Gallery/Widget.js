@@ -33,6 +33,10 @@ define([
 				domClass.add(this._home.domNode, "view-stack-focus");
 				
 				this._categories = new CategoriesWidget();
+				this._categories.baseUri = searchUri;
+				this._categories.pageSize = 6;
+				this._categories.mapItemUrls = this.config.mapItemUrls;
+				this._categories.map = this.map;
 				this._categories.placeAt(this, 1);
 				this._categories.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				domClass.add(this._categories.domNode, "view-stack");
@@ -87,6 +91,7 @@ define([
 			},
 			resize: function(){
 				this._home.resize(); 	
+				this._categories.resize();
 			}		
 	});
 
