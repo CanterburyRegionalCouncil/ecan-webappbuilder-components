@@ -2,15 +2,13 @@ define([
 		'dojo/_base/declare',
 		'dojo/_base/lang',
 		'dojo/_base/array',
-		'dojo/dom',
-		'dojo/dom-class',
 		'dojo/query',
 		'dijit/_WidgetBase',
 		'dijit/_TemplatedMixin',
 		'dojo/text!./template/widget.html',
 		'./../Category/widget',
 		'./../Result/widget',
-	], function(declare, lang, arrayUtil, dom, domClass, query, _WidgetBase, _TemplatedMixin, widgetTemplate, CategoryWidget, ResultWidget){
+	], function(declare, lang, arrayUtil, query, _WidgetBase, _TemplatedMixin, widgetTemplate, CategoryWidget, ResultWidget){
 		return declare('CategoriesWidget', [_WidgetBase, _TemplatedMixin], {
 			templateString:widgetTemplate,
 			baseUri:"",
@@ -46,11 +44,9 @@ define([
 				categoryWidget.on('categoryClickEvent', lang.hitch(this, this._categoryClicked));
 			},
 			_categoryClicked:function(category){
-				query('.search-items', this.domNode).addClass('hide');
-				query('.search-results', this.domNode).removeClass('hide');
-				
 				this._resultsWidget.updatePagination = true;
 				this._resultsWidget.searchMapsAndApps(category.Title);
+				this._showResults();
 			},
 			_showHomeClick:function(/*Event*/ e){
 				e.preventDefault();
@@ -64,6 +60,10 @@ define([
 			_showItems:function(){
 				query('.search-items', this.domNode).removeClass('hide');
 				query('.search-results', this.domNode).addClass('hide');
+			},
+			_showResults:function(){
+				query('.search-items', this.domNode).addClass('hide');
+				query('.search-results', this.domNode).removeClass('hide');
 			},
 			onShowPanelEvent:function(){}
 		});

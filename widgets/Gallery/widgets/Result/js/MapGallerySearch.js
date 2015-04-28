@@ -14,11 +14,20 @@ define([
 			requestSearchResults:function(type, searchText){
 				
 				var requestUri = this.baseUri + "?";
+				var parameters = "";
 				
 				if(searchText){
-					requestUri += "SearchText=[" + type + ":" + searchText + "]&";
+					
+					parameters = searchText;
+					
+					if(type){
+						parameters = type + ":" + parameters;
+					}
+					
+					parameters = "SearchText=[" + parameters + "]&";
 				}
 				
+				requestUri += parameters;
 				requestUri += "PageSize=" + this.pageSize;
 				requestUri += "&Page=" + this.page;
 				requestUri += "&OrderBy=" + this.orderBy;
