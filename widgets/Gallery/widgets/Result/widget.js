@@ -5,7 +5,6 @@ define([
 	'dojo/query',
 	'dojo/dom-construct',
 	'dojo/dom-geometry',
-	'dojo/dom-class',
 	'dijit/_WidgetBase',
 	'dijit/_TemplatedMixin',
 	'./js/MapGallerySearch',
@@ -13,64 +12,34 @@ define([
 	'./../ItemThumbMap/Widget',
 	'./../ItemThumbApp/Widget',
 	'dojo/text!./template/widget.html',
-	],function(declare, arrayUtil, lang, query, domConstruct, domGeom, domClass, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, MapThumb, AppThumb, widgetTemplate){
+	],function(declare, arrayUtil, lang, query, domConstruct, domGeom, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, MapThumb, AppThumb, widgetTemplate){
 	
 		return declare('ResultsWidget', [_WidgetBase, _TemplatedMixin, MapGallerySearch],{
 			templateString:widgetTemplate,
 			map:null, 
 			_webMaps:[],
+			_pagination:null,
 			pageSize:0,
 			page:1,
 			updatePagination:true,
 			mapItemUrls:null,
-			type:"",
 			_resultsContainer:null,
-			_alert:null,
 			startup:function(){
 				this.inherited(arguments);
 				this._resultsContainer = query('.gallery-results-container', this.domNode)[0];//only one so grab the first
-				this._alert = query('.alert', this.domNode)[0];//only one so grab the first
 			},
-			allMapsAndApps:function(){
+			getAllMapsAndApps:function(){
 				this.requestSearchResults();
-			},
-			searchMapsAndApps:function(searchText){
-				this.requestSearchResults(this.type, searchText);
 			},
 			searchResultsRequestResponse:function(results){
 				
-				this._removeAllThumbs();
+				this._displayThumbs(results.WebMaps);
 				
-				if(results.TotalHits === 0){
-					this._showAlert();
-				}				
-				else{
-					
-					this._displayThumbs(results.WebMaps);
-					
-					if(this.updatePagination){
-						this._configurePagination(results.TotalHits);
-					}
-					
-					this._showResults();
+				if(this.updatePagination){
+					this._configurePagination(results.TotalHits);
 				}
 			},
-			clearResults:function(){
-				this.updatePagination = true;
-				this._removeAllThumbs();
-			},
-			_showResults:function(){
-				domClass.add(this._alert, 'hide');
-				domClass.remove(this._resultsContainer, 'hide');
-			},
-			_showAlert:function(){
-				domClass.remove(this._alert, 'hide');
-				domClass.add(this._resultsContainer, 'hide');
-				this._removePagination();
-			},
 			_configurePagination:function(totalHits){
-				
-				this._removePagination();
 				
 				var pagination = new Pagination();
 				pagination.totalResults = totalHits;
@@ -80,9 +49,6 @@ define([
 				pagination.placeAt(this.domNode, "last");
 				pagination.on("page", lang.hitch(this, this._changePage));
 				
-			},
-			_removePagination:function(){
-				query('.dojoPage', this.domNode).forEach(domConstruct.destroy);
 			},
 			_displayThumbs:function(webItems){
 				arrayUtil.forEach(webItems, lang.hitch(this, this._displayThumb));
@@ -108,7 +74,7 @@ define([
 				this.requestSearchResults();
 			},
 			_removeAllThumbs:function(){
-				query('.thumbnail', this.domNode).forEach(domConstruct.destroy);
+				query('.thumbnail').forEach(domConstruct.destroy);
 			},
 			resize:function(){
 				var widgetPosition = domGeom.position(this.domNode);
