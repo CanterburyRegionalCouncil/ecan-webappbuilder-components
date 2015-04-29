@@ -44,8 +44,12 @@ define([
 				categoryWidget.on('categoryClickEvent', lang.hitch(this, this._categoryClicked));
 			},
 			_categoryClicked:function(category){
+				
+				this._resultsWidget.clearResults();
 				this._resultsWidget.updatePagination = true;
-				this._resultsWidget.searchMapsAndApps(category.Title);
+				this._resultsWidget.searchText = category.Title;
+				this._resultsWidget.searchMapsAndApps();
+				
 				this._showResults();
 			},
 			_showHomeClick:function(/*Event*/ e){

@@ -11,17 +11,19 @@ define([
 			pageSize:6,
 			page:1,
 			orderBy:"MostRecent",
-			requestSearchResults:function(type, searchText){
+			type:"",
+			searchText:"", 
+			requestSearchResults:function(){
 				
 				var requestUri = this.baseUri + "?";
 				var parameters = "";
 				
-				if(searchText){
+				if(this.searchText){
 					
-					parameters = searchText;
+					parameters = this.searchText;
 					
-					if(type){
-						parameters = type + ":" + parameters;
+					if(this.type){
+						parameters = this.type + ":" + parameters;
 					}
 					
 					parameters = "SearchText=[" + parameters + "]&";

@@ -13,11 +13,13 @@ define([
 			mapItemUrls:null,
 			map:null,
 			_container:null,
+			_searchInput:null,
 			_resultsWidgetAll:null,
 			startup:function(){
 				this.inherited(arguments);
 				
 				this._container = query('.search-items', this.domNode)[0]; //Only one so grab the first
+				this._searchInput = query('.form-control', this.domNode)[0]; //Only one so grab the first
 				
 				this._resultsWidgetAll = new ResultsWidget();
 				this._resultsWidgetAll.baseUri = this.baseUri;
@@ -36,11 +38,20 @@ define([
 				this._resultsWidget.placeAt(resultContainer);
 			},
 			searchText:function(/* Event */ e){
+				
 				e.preventDefault();
 				
-				this._resultsWidget.updatePagination = true;
-				this._resultsWidget.searchMapsAndApps('water quality');
-				this._showResults();
+				var searchText = this._searchInput.value;
+				
+				if(searchText){
+					this._resultsWidget.clearResults();
+					this._resultsWidget.updatePagination = true;
+					this._resultsWidget.searchText = searchText;
+					this._resultsWidget.searchMapsAndApps();
+					
+					this._showResults();
+					
+				}
 			},
 			searchByCategory:function(/* Event */ e){
 				e.preventDefault();
