@@ -7,8 +7,8 @@ define([
 		'jimu/BaseWidget', 
 		'./widgets/Home/widget',
 		'./js/PortalSearch',
-		'./widgets/Categories/widget'
-	],function(declare, event, lang, on, domClass, BaseWidget, HomeWidget, PortalSearch, CategoriesWidget) {
+		'./widgets/ItemParameters/Widget'
+	],function(declare, event, lang, on, domClass, BaseWidget, HomeWidget, PortalSearch, ItemParametersWidget) {
   
 		return declare([BaseWidget], {
 			
@@ -17,6 +17,8 @@ define([
 			_resultsHome:null,
 			_home:null,
 			_categories:null,
+			_organisations:null,
+			_stackContainer:null,
 			startup: function() {
 				this.inherited(arguments);
 				
@@ -28,11 +30,15 @@ define([
 				this._home.mapItemUrls = this.config.mapItemUrls;
 				this._home.map = this.map;
 				this._home.placeAt(this, 0);
+				this._home.placeAt(this.domNode, 0);
 				this._home.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				domClass.add(this._home.domNode, "view-stack");
 				domClass.add(this._home.domNode, "view-stack-focus");
 				
-				this._categories = new CategoriesWidget();
+				//this._categories = new CategoriesWidget();
+				this._categories = new ItemParametersWidget();
+				this._categories.title = "Categories";
+				this._categories.type = "category";
 				this._categories.baseUri = searchUri;
 				this._categories.pageSize = 6;
 				this._categories.mapItemUrls = this.config.mapItemUrls;
@@ -41,17 +47,31 @@ define([
 				this._categories.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				domClass.add(this._categories.domNode, "view-stack");
 				
+				this._organisations = new ItemParametersWidget();
+				this._organisations.title = "Organisations";
+				this._organisations.type = "org";
+				this._organisations.baseUri = searchUri;
+				this._organisations.pageSize = 6;
+				this._organisations.mapItemUrls = this.config.mapItemUrls;
+				this._organisations.map = this.map;
+				this._organisations.placeAt(this, 2);
+				this._organisations.on("showPanelEvent", lang.hitch(this, this._showPanel));
+				domClass.add(this._organisations.domNode, "view-stack");
+				
 				this._configureSearchElements();
+				this.resize();
 			},
 			_showPanel:function(panelName){
 				domClass.remove(this._home.domNode, "view-stack-focus");
 				domClass.remove(this._categories.domNode, "view-stack-focus");
-				
+				domClass.remove(this._organisations.domNode, "view-stack-focus");
 				
 				if(panelName == "Home"){
 					domClass.add(this._home.domNode, "view-stack-focus");
 				}else if(panelName =="Category"){
 					domClass.add(this._categories.domNode, "view-stack-focus");
+				}else if(panelName == "Organisation"){
+					domClass.add(this._organisations.domNode, "view-stack-focus");
 				}
 			},
 			_configureSearchElements:function(){
@@ -75,7 +95,7 @@ define([
 				this._categories.items(categories);
 			},
 			_configureOrganisations:function(organisations){
-				console.log("Populate Organisations");
+				this._organisations.items(organisations);
 			},
 			_configureTags:function(tags){
 				console.log("Populate Tag Cloud");

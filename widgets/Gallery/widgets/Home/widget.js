@@ -4,9 +4,10 @@ define([
 		'dijit/_WidgetBase',
 		'dijit/_TemplatedMixin',
 		'dojo/text!./template/widget.html',
+		'./../../js/ViewController',
 		'./../Result/widget',
-	], function(declare, query, _WidgetBase, _TemplatedMixin, widgetTemplate, ResultsWidget){
-		return declare('HomeWidget', [_WidgetBase, _TemplatedMixin], {
+	], function(declare, query, _WidgetBase, _TemplatedMixin, widgetTemplate, ViewController, ResultsWidget){
+		return declare('HomeWidget', [_WidgetBase, _TemplatedMixin, ViewController], {
 			templateString:widgetTemplate,
 			baseUri:"",
 			pageSize:6,
@@ -59,7 +60,7 @@ define([
 			},
 			searchByOrganisation:function(/* Event */ e){
 				e.preventDefault();
-				alert("Not yet implemented");
+				this.onShowPanelEvent("Organisation");
 			},
 			searchByTag:function(/* Event */ e){
 				e.preventDefault();
@@ -69,18 +70,9 @@ define([
 				e.preventDefault();
 				this._showItems();
 			},
-			_showItems:function(){
-				query('.search-items', this.domNode).removeClass('hide');
-				query('.search-results', this.domNode).addClass('hide');
-			},
-			_showResults:function(){
-				query('.search-items', this.domNode).addClass('hide');
-				query('.search-results', this.domNode).removeClass('hide');
-			},
 			resize:function(){
 				this._resultsWidgetAll.resize();
-			},
-			onShowPanelEvent:function(){}
+			}
 		});
 	}
 );
