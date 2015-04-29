@@ -2,57 +2,55 @@ define([
 		'dojo/_base/declare', 
 		'dojo/_base/event',
 		'dojo/_base/lang',
+		'dojo/_base/array',
+		'dojo/dom',
 		'dojo/on',
-		'dojo/dom-class',
 		'jimu/BaseWidget', 
-		'./widgets/Home/widget',
+		'./js/ViewController',
 		'./js/PortalSearch',
-		'./widgets/Categories/widget'
-	],function(declare, event, lang, on, domClass, BaseWidget, HomeWidget, PortalSearch, CategoriesWidget) {
+		'./widgets/Category/widget',
+		'./widgets/Result/widget',
+	
+	],function(declare, event, lang, arrayUtil, dom, on, BaseWidget, ViewController, PortalSearch, CategoryWidget, Results) {
   
 		return declare([BaseWidget], {
 			
 			baseClass: 'gallery-widget',
 			_viewController:null,
+			_portalSearch:null,
+			_categoryList:null,
 			_resultsHome:null,
-			_home:null,
-			_categories:null,
 			startup: function() {
 				this.inherited(arguments);
 				
-				var searchUri = this.config.portalApiUri + "/" + this.config.searchPath;
-				
-				this._home = new HomeWidget();
-				this._home.baseUri = searchUri;
-				this._home.pageSize = 6;
-				this._home.mapItemUrls = this.config.mapItemUrls;
-				this._home.map = this.map;
-				this._home.placeAt(this, 0);
-				this._home.on("showPanelEvent", lang.hitch(this, this._showPanel));
-				domClass.add(this._home.domNode, "view-stack");
-				domClass.add(this._home.domNode, "view-stack-focus");
-				
-				this._categories = new CategoriesWidget();
-				this._categories.baseUri = searchUri;
-				this._categories.pageSize = 6;
-				this._categories.mapItemUrls = this.config.mapItemUrls;
-				this._categories.map = this.map;
-				this._categories.placeAt(this, 1);
-				this._categories.on("showPanelEvent", lang.hitch(this, this._showPanel));
-				domClass.add(this._categories.domNode, "view-stack");
+				this._categoryList = dom.byId('categoryList');//Unlikely but possible race condition
 				
 				this._configureSearchElements();
+				this._initiateViewController();
+				
+				var searchHomePanel = dom.byId("searchHome");
+				
+				var searchUri = this.config.portalApiUri + "/" + this.config.searchPath;
+				this._resultsHome = new Results();
+				this._resultsHome.baseUri = searchUri;
+				this._resultsHome.pageSize = 6;
+				this._resultsHome.mapItemUrls = this.config.mapItemUrls;
+				this._resultsHome.map = this.map;
+				this._resultsHome.placeAt(searchHomePanel);
+				this._resultsHome.getAllMapsAndApps();
+				
 			},
-			_showPanel:function(panelName){
-				domClass.remove(this._home.domNode, "view-stack-focus");
-				domClass.remove(this._categories.domNode, "view-stack-focus");
-				
-				
-				if(panelName == "Home"){
-					domClass.add(this._home.domNode, "view-stack-focus");
-				}else if(panelName =="Category"){
-					domClass.add(this._categories.domNode, "view-stack-focus");
-				}
+			_initiateViewController:function(){
+				var viewsIds = [
+					'searchHome', 
+					'searchByCategory', 
+					'searchByOrganisation', 
+					'searchByTag', 
+					'searchResult'];
+					
+				this._viewController = new ViewController();
+				this._viewController.configureViews(viewsIds);
+				this._viewController.focusView('searchHome');
 			},
 			_configureSearchElements:function(){
 			
@@ -71,8 +69,18 @@ define([
 				
 				portalSearch.requestSearchLinks();
 				
+				this._portalSearch = portalSearch;
 			},_configureCategories:function(categories){
-				this._categories.items(categories);
+				arrayUtil.forEach(categories, lang.hitch(this, this._configureCategory));
+			},
+			_configureCategory:function(category){
+				var categoryWidget = new CategoryWidget();
+				categoryWidget.category(category);
+				categoryWidget.placeAt(this._categoryList);
+				categoryWidget.on('categoryClickEvent', lang.hitch(this, this._categoryClicked));
+			},
+			_categoryClicked:function(category){
+				this._portalSearch.searchCategory(category);
 			},
 			_configureOrganisations:function(organisations){
 				console.log("Populate Organisations");
@@ -84,14 +92,30 @@ define([
 				//Populate the search result panel with search result widgets
 				//Set up breadcrumbs
 				//Set up pagination
-				//this._viewController.focusView('searchResult');
+				this._viewController.focusView('searchResult');
+			},
+			searchText:function(/* Event */ e){
+				evt.preventDefault();
+				console.log("Search Text");
 			},
 			searchHome:function(/* Event */ e){
 				this._viewController.focusView('searchHome');
 			},
+			searchByCategory:function(/* Event */ e){
+				e.preventDefault();
+				this._viewController.focusView('searchByCategory');
+			},
+			searchByOrganisation:function(/* Event */ e){
+				this._viewController.focusView('searchByOrganisation');
+			},
+			searchByTag:function(/* Event */ e){
+				this._viewController.focusView('searchByTag');
+			},
+			searchResult:function(/* Event */ e){
+				this._viewController.focusView('searchResult');
+			},
 			resize: function(){
-				this._home.resize(); 	
-				this._categories.resize();
+				this._resultsHome.resize();
 			}		
 	});
 

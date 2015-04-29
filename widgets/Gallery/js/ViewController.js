@@ -8,18 +8,27 @@ define([
 
 		return declare('ViewController', [], {
 		
-			views:[],
-			_focusView:null,
+			_viewIds:[],
+			_focusViewId:null,
 			_focusCSSClass:"view-stack-focus",
-			focusView:function(view){
+			configureViews:function(viewIds){				
+				this._viewIds = viewIds;
+			},
+			focusView:function(id){
 				this._hideAllViews();
-				domClass.add(view, this._focusCSSClass);
-				this._focusView = view;
+				this._focusViewById(id);
 			},
 			_hideAllViews:function(){
-				arrayUtil.forEach(this._views, lang.hitch(this, function(view){
-					domClass.remove(view, this._focusCSSClass);
+				arrayUtil.forEach(this._viewIds, lang.hitch(this, function(id){
+					domClass.remove(id, this._focusCSSClass);
 				}));
+			},
+			_focusViewById:function(id){
+				domClass.add(id, this._focusCSSClass);
+				this._focusViewId = id;
+			},
+			_getViewFromDomById:function(id){
+				return dom.byId(id);
 			}
 		});
 	}
