@@ -269,3 +269,32 @@ div.dojoPage{
   cursor: default;
   background-color: #FAFAFA;
 }
+
+div.search-item-container {
+	line-height: 20px;
+}
+
+div.search-item-container  span{
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+div.search-item-container .Weight1{	
+	font-size: 28px;
+}
+
+div.search-item-container  .Weight2{
+	font-size: 22px;
+}
+
+div.search-item-container .Weight3{
+	font-size: 16px;
+}
+
+div.search-item-container .Weight4{
+	font-size: 12px;
+}
+
+div.search-item-container .Weight5{
+	font-size: 10px;
+}

@@ -56,7 +56,7 @@ define([
 			},
 			searchByTag:function(/* Event */ e){
 				e.preventDefault();
-				alert("Not yet implemented");
+				this.onShowPanelEvent("Tags");
 			},
 			_showItemsClick:function(/*Event*/ e){
 				e.preventDefault();
