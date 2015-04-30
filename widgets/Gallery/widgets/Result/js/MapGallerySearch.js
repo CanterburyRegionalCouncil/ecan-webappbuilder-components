@@ -19,14 +19,7 @@ define([
 				var parameters = "";
 				
 				if(this.searchText){
-					
-					parameters = this.searchText;
-					
-					if(this.type){
-						parameters = this.type + ":" + parameters;
-					}
-					
-					parameters = "SearchText=[" + parameters + "]&";
+					parameters = "SearchText=[" + this.searchText + "]&";
 				}
 				
 				requestUri += parameters;

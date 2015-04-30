@@ -20,6 +20,11 @@ define([
 			startup: function() {
 				this.inherited(arguments);
 				
+				this._injectPanelsIntoWidget();
+				this._retrieveSearchParameters();
+				this.resize();
+			},
+			_injectPanelsIntoWidget:function(){
 				var searchUri = this.config.portalApiUri + "/" + this.config.searchPath;
 				
 				this._home = new HomeWidget();
@@ -34,7 +39,6 @@ define([
 				
 				this._categories = new ItemParametersWidget();
 				this._categories.title = "Categories";
-				this._categories.type = "category";
 				this._categories.baseUri = searchUri;
 				this._categories.pageSize = 6;
 				this._categories.mapItemUrls = this.config.mapItemUrls;
@@ -45,7 +49,6 @@ define([
 				
 				this._organisations = new ItemParametersWidget();
 				this._organisations.title = "Organisations";
-				this._organisations.type = "org";
 				this._organisations.baseUri = searchUri;
 				this._organisations.pageSize = 6;
 				this._organisations.mapItemUrls = this.config.mapItemUrls;
@@ -64,9 +67,6 @@ define([
 				this._tags.placeAt(this);
 				this._tags.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._tags.domNode);
-				
-				this._configureSearchElements();
-				this.resize();
 			},
 			_showPanel:function(panelName){
 				this._removePanelFocus(this._home.domNode);
@@ -93,7 +93,7 @@ define([
 			_setPanelFocus:function(panelNode){
 				domClass.add(panelNode, "view-stack-focus");
 			},
-			_configureSearchElements:function(){
+			_retrieveSearchParameters:function(){
 			
 				var baseUri = this.config.portalApiUri;
 				
@@ -122,7 +122,6 @@ define([
 				this._organisations.resize();
 				this._tags.resize();
 			}		
-	});
-
+		});
 	}
 );
