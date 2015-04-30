@@ -24,13 +24,6 @@ define([
 			updatePagination:true,
 			mapItemUrls:null,
 			type:"",
-			_resultsContainer:null,
-			_alert:null,
-			startup:function(){
-				this.inherited(arguments);
-				this._resultsContainer = query('.gallery-results-container', this.domNode)[0];//only one so grab the first
-				this._alert = query('.alert', this.domNode)[0];//only one so grab the first
-			},
 			allMapsAndApps:function(){
 				this.requestSearchResults();
 			},
@@ -60,12 +53,12 @@ define([
 				this._removeAllThumbs();
 			},
 			_showResults:function(){
-				domClass.add(this._alert, 'hide');
-				domClass.remove(this._resultsContainer, 'hide');
+				domClass.add(this.alertNode, 'hide');
+				domClass.remove(this.galleryResultsContainerNode, 'hide');
 			},
 			_showAlert:function(){
-				domClass.remove(this._alert, 'hide');
-				domClass.add(this._resultsContainer, 'hide');
+				domClass.remove(this.alertNode, 'hide');
+				domClass.add(this.galleryResultsContainerNode, 'hide');
 				this._removePagination();
 			},
 			_configurePagination:function(totalHits){
@@ -99,7 +92,7 @@ define([
 					itemThumb.map = this.map;
 				}
 				
-				itemThumb.placeAt(this._resultsContainer, 'last');
+				itemThumb.placeAt(this.galleryResultsContainerNode, 'last');
 			},
 			_changePage:function(/*Event*/ e){
 				this._removeAllThumbs();

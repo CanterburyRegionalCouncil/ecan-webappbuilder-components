@@ -1,10 +1,10 @@
 define([
 	'dojo/_base/declare',
-	'dojo/query',
+	'dojo/dom-class',
 	'dijit/_WidgetBase',
 	'dijit/_TemplatedMixin',
 	'dojo/text!./template/widget.html'
-	],function(declare, query, _WidgetBase, _TemplatedMixin, widgetTemplate){
+	],function(declare, domClass, _WidgetBase, _TemplatedMixin, widgetTemplate){
 	
 		return declare('ItemParameter', [_WidgetBase, _TemplatedMixin],{
 			templateString:widgetTemplate,
@@ -24,7 +24,7 @@ define([
 					this.set("imageAlt", parameter.Title);
 					this.set("imageUrl", "http://www.arcgis.com/sharing/rest/community/groups/" + id + "/info/" + thumbnail);
 					
-					query('.gallery-parameter-image', this.domNode).removeClass('hide');
+					domClass.remove(this.parameterImageNode, 'hide');
 				}
 			},
 			innerText:"Unknown",

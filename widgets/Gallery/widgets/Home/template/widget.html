@@ -1,12 +1,12 @@
 <div>
-	<div class="search-items">
+	<div data-dojo-attach-point="searchItemsNode">
 		<div class="gallery-content">
 			<p>The gallery contains a list of interactive maps that display information on a variety of subjects that can be opened in any of the viewers available in this portal. It now also lists purpose built custom applications (apps) such as story maps that have been built for a specific purpose.</p>
 		</div>
 		<div>
 			<FORM data-dojo-event="onSubmit: searchText" data-dojo-type="dijit/form/FORM" data-dojo-attach-point="form" method="submit">
 				<div class="input-group">
-					<input class="form-control" autofocus type="text" placeholder="Search">
+					<input data-dojo-attach-point="searchInputNode" class="form-control" autofocus type="text" placeholder="Search">
 					<div class="input-group-btn">
 						<button class="btn btn-default" type="submit"
 							data-dojo-attach-event="onClick:searchText">
@@ -22,12 +22,10 @@
 			<a class="btn btn-xs btn-default" href="#" data-dojo-attach-event="click:searchByTag">Tags</a>
 		</div>
 	</div>
-	<div class="search-results hide">
+	<div data-dojo-attach-point="searchResultsNode" class="hide">
 		<ol class="breadcrumb">
 			<li><a href="#" data-dojo-attach-event="click:_showItemsClick">Home</a></li>
 			<li class="active"><a href="#">Results</a></li>
 		</ol>
-		<div class="search-result-container">
-		</div>
 	<div>
 </div>

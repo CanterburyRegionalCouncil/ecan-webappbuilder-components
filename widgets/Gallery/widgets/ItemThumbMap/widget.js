@@ -66,18 +66,6 @@ define([
 			
 			_snippet:"",
 			_setSnippetAttr:{node: "resultSnippedNode", type:"innerHTML" },
-			
-			/*_imageLink:"",
-			_setImageLinkAttr:{node: "resultLinkNode", type: "attribute", attribute: "href" },
-			
-			_basicUrl:"",
-			_setBasicUrlAttr:{node: "resultLinkBasicNode", type: "attribute", attribute: "href" },
-			
-			_advancedUrl:"",
-			_setAdvancedUrlAttr:{node: "resultLinkAdvancedNode", type: "attribute", attribute: "href" },
-			
-			_agolUrl:"",
-			_setAgolUrlAttr:{node: "resultLinkAGOLNode", type: "attribute", attribute: "href" },*/
 		});
 	
 	}
