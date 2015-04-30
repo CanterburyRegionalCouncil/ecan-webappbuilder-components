@@ -22,7 +22,7 @@ define([
 				this._resultsWidgetAll.mapItemUrls = this.mapItemUrls;
 				this._resultsWidgetAll.map = this.map;
 				this._resultsWidgetAll.placeAt(this.searchItemsNode, "last");
-				this._resultsWidgetAll.allMapsAndApps();
+				this._resultsWidgetAll.searchMapsAndApps();
 				
 				this._resultsWidget = new ResultsWidget();
 				this._resultsWidget.baseUri = this.baseUri;

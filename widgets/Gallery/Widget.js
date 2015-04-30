@@ -6,9 +6,9 @@ define([
 		'dojo/dom-class',
 		'jimu/BaseWidget', 
 		'./widgets/Home/widget',
-		'./js/PortalSearch',
+		'./js/SearchParameters',
 		'./widgets/ItemParameters/Widget'
-	],function(declare, event, lang, on, domClass, BaseWidget, HomeWidget, PortalSearch, ItemParametersWidget) {
+	],function(declare, event, lang, on, domClass, BaseWidget, HomeWidget, SearchParameters, ItemParametersWidget) {
   
 		return declare([BaseWidget], {
 			
@@ -78,18 +78,15 @@ define([
 			
 				var baseUri = this.config.portalApiUri;
 				
-				var portalSearch = new PortalSearch();
-				portalSearch.configUri = baseUri + "/" + this.config.configPath;
-				portalSearch.searchUri = baseUri + "/" + this.config.searchPath;
-				portalSearch.pageSize = this.config.pageSize;
-				portalSearch.orderBy = this.config.orderBy;
+				var searchParameters = new SearchParameters();
+				searchParameters.uri = baseUri + "/" + this.config.configPath;
+
+				searchParameters.on("onCategoriesRetrievedEvent", lang.hitch(this, this._configureCategories));
+				searchParameters.on("onOrganisationsRetrievedEvent", lang.hitch(this, this._configureOrganisations));
+				searchParameters.on("onTagsRetrievedEvent", lang.hitch(this, this._configureTags));
+				searchParameters.on("onSearchResultsRetreived", lang.hitch(this, this._configureResults));
 				
-				portalSearch.on("onCategoriesRetrievedEvent", lang.hitch(this, this._configureCategories));
-				portalSearch.on("onOrganisationsRetrievedEvent", lang.hitch(this, this._configureOrganisations));
-				portalSearch.on("onTagsRetrievedEvent", lang.hitch(this, this._configureTags));
-				portalSearch.on("onSearchResultsRetreived", lang.hitch(this, this._configureResults));
-				
-				portalSearch.requestSearchLinks();
+				searchParameters.requestSearchParameters();
 				
 			},_configureCategories:function(categories){
 				this._categories.items(categories);
@@ -99,12 +96,6 @@ define([
 			},
 			_configureTags:function(tags){
 				console.log("Populate Tag Cloud");
-			},
-			_configureResults:function(results){
-				//Populate the search result panel with search result widgets
-				//Set up breadcrumbs
-				//Set up pagination
-				//this._viewController.focusView('searchResult');
 			},
 			searchHome:function(/* Event */ e){
 				this._viewController.focusView('searchHome');

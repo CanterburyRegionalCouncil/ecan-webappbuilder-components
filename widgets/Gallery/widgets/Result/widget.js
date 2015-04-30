@@ -23,12 +23,9 @@ define([
 			page:1,
 			updatePagination:true,
 			mapItemUrls:null,
-			type:"",
-			allMapsAndApps:function(){
-				this.requestSearchResults();
-			},
 			searchMapsAndApps:function(searchText){
-				this.requestSearchResults(this.type, searchText);
+				this.page = 1;
+				this.requestSearchResults();
 			},
 			searchResultsRequestResponse:function(results){
 				
@@ -38,17 +35,13 @@ define([
 					this._showAlert();
 				}				
 				else{
-					
-					this._displayThumbs(results.WebMaps);
-					
-					if(this.updatePagination){
-						this._configurePagination(results.TotalHits);
-					}
-					
+					this._appendThumbs(results.WebMaps);
+					this._configurePagination(results.TotalHits);
 					this._showResults();
 				}
 			},
 			clearResults:function(){
+				this.page = 1;
 				this.updatePagination = true;
 				this._removeAllThumbs();
 			},
@@ -59,29 +52,32 @@ define([
 			_showAlert:function(){
 				domClass.remove(this.alertNode, 'hide');
 				domClass.add(this.galleryResultsContainerNode, 'hide');
-				this._removePagination();
+				this._removeExistingPagination();
 			},
 			_configurePagination:function(totalHits){
 				
-				this._removePagination();
+				if(this.updatePagination){
+					
+					this._removeExistingPagination();
 				
-				var pagination = new Pagination();
-				pagination.totalResults = totalHits;
-				pagination.resultsPerPage = this.pageSize;
-				pagination.currentPage = this.page;
-				pagination.pagesPerSide = 1;
-				pagination.placeAt(this.domNode, "last");
-				pagination.on("page", lang.hitch(this, this._changePage));
+					var pagination = new Pagination();
+					pagination.totalResults = totalHits;
+					pagination.resultsPerPage = this.pageSize;
+					pagination.currentPage = this.page;
+					pagination.pagesPerSide = 1;
+					pagination.placeAt(this.domNode, "last");
+					pagination.on("page", lang.hitch(this, this._changePage));
+				}
 				
 			},
-			_removePagination:function(){
+			_removeExistingPagination:function(){
 				query('.dojoPage', this.domNode).forEach(domConstruct.destroy);
 			},
-			_displayThumbs:function(webItems){
-				arrayUtil.forEach(webItems, lang.hitch(this, this._displayThumb));
+			_appendThumbs:function(webItems){
+				arrayUtil.forEach(webItems, lang.hitch(this, this._appendThumb));
 				this.resize();
 			},
-			_displayThumb:function(webItem){
+			_appendThumb:function(webItem){
 				
 				var itemThumb = null;
 				
