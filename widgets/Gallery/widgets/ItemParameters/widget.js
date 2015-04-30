@@ -15,7 +15,6 @@ define([
 		return declare('ParameterWidget',[_WidgetBase, _TemplatedMixin],{
 			templateString:widgetTemplate,
 			title:"Unknown",
-			type:"",
 			baseUri:"",
 			pageSize:6,
 			mapItemUrls:null,
@@ -32,7 +31,6 @@ define([
 				
 				this._resultsWidget = new ResultWidget();
 				this._resultsWidget.baseUri = this.baseUri;
-				this._resultsWidget.type = this.type;
 				this._resultsWidget.pageSize = this.pageSize;
 				this._resultsWidget.mapItemUrls = this.mapItemUrls;
 				this._resultsWidget.map = this.map;
@@ -72,7 +70,7 @@ define([
 				
 				this._resultsWidget.clearResults();
 				this._resultsWidget.updatePagination = true;
-				this._resultsWidget.searchText = parameter.Title;
+				this._resultsWidget.searchText = parameter.Tag;
 				this._resultsWidget.searchMapsAndApps();
 				
 				this._showResults();
