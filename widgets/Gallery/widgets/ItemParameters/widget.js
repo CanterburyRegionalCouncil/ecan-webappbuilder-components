@@ -2,13 +2,15 @@ define([
 		'dojo/_base/declare',
 		'dojo/_base/lang',
 		'dojo/_base/array',
+		'dojo/dom-construct',
 		'dojo/dom-class',
 		'dijit/_WidgetBase',
 		'dijit/_TemplatedMixin',
 		'dojo/text!./template/widget.html',
 		'./../ItemParameter/widget',
+		'./../ItemCloudParameter/widget',
 		'./../Result/widget',
-	], function(declare, lang, arrayUtil, domClass, _WidgetBase, _TemplatedMixin, widgetTemplate, ItemParameterWidget, ResultWidget){
+	], function(declare, lang, arrayUtil, domConstruct, domClass, _WidgetBase, _TemplatedMixin, widgetTemplate, ItemParameterWidget, ItemCloudParameterWidget, ResultWidget){
 		
 		return declare('ParameterWidget',[_WidgetBase, _TemplatedMixin],{
 			templateString:widgetTemplate,
@@ -18,12 +20,15 @@ define([
 			pageSize:6,
 			mapItemUrls:null,
 			map:null,
+			isCloud:false,
+			_searchItemContainerNode:null,
 			startup:function(){
 				this.inherited(arguments);
-				
 				this.itemsBreadCrumbTitle.innerHTML = this.title;
 				this.itemsTitle.innerHTML = this.title;
 				this.resultsBreadCrumbTitle.innerHTML = this.title;
+				
+				this._createItemContainerNode();
 				
 				this._resultsWidget = new ResultWidget();
 				this._resultsWidget.baseUri = this.baseUri;
@@ -33,14 +38,34 @@ define([
 				this._resultsWidget.map = this.map;
 				this._resultsWidget.placeAt(this.searchResultsNode);
 			},
+			_createItemContainerNode:function(){
 			
+				if(this.isCloud){
+					this._searchItemContainerNode = domConstruct.create("div");
+				}
+				else{
+					this._searchItemContainerNode = domConstruct.create("ul");
+				}
+				
+				domClass.add(this._searchItemContainerNode, "search-item-container");
+				domConstruct.place(this._searchItemContainerNode, this.searchItemsNode);
+			},
 			items:function(items){
 				arrayUtil.forEach(items, lang.hitch(this, this._configureItem));
 			},
 			_configureItem:function(parameter){
-				var parameterWidget = new ItemParameterWidget();
+			
+				var parameterWidget = {};
+				
+				if(this.isCloud){
+					parameterWidget = new ItemCloudParameterWidget();
+				}
+				else{
+					parameterWidget = new ItemParameterWidget();
+				}
+				 
 				parameterWidget.parameter(parameter);
-				parameterWidget.placeAt(this.searchItemContainerNode);
+				parameterWidget.placeAt(this._searchItemContainerNode);
 				parameterWidget.on('parameterClickEvent', lang.hitch(this, this._parameterClicked));
 			},
 			_parameterClicked:function(parameter){

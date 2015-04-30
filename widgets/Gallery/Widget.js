@@ -13,12 +13,10 @@ define([
 		return declare([BaseWidget], {
 			
 			baseClass: 'gallery-widget',
-			_viewController:null,
-			_resultsHome:null,
 			_home:null,
 			_categories:null, 
 			_organisations:null,
-			_stackContainer:null,
+			_tags:null,
 			startup: function() {
 				this.inherited(arguments);
 				
@@ -29,13 +27,11 @@ define([
 				this._home.pageSize = 6;
 				this._home.mapItemUrls = this.config.mapItemUrls;
 				this._home.map = this.map;
-				this._home.placeAt(this, 0);
-				this._home.placeAt(this.domNode, 0);
+				this._home.placeAt(this);
 				this._home.on("showPanelEvent", lang.hitch(this, this._showPanel));
-				domClass.add(this._home.domNode, "view-stack");
-				domClass.add(this._home.domNode, "view-stack-focus");
+				this._configureAsPanel(this._home.domNode);
+				this._setPanelFocus(this._home.domNode);
 				
-				//this._categories = new CategoriesWidget();
 				this._categories = new ItemParametersWidget();
 				this._categories.title = "Categories";
 				this._categories.type = "category";
@@ -43,9 +39,9 @@ define([
 				this._categories.pageSize = 6;
 				this._categories.mapItemUrls = this.config.mapItemUrls;
 				this._categories.map = this.map;
-				this._categories.placeAt(this, 1);
+				this._categories.placeAt(this);
 				this._categories.on("showPanelEvent", lang.hitch(this, this._showPanel));
-				domClass.add(this._categories.domNode, "view-stack");
+				this._configureAsPanel(this._categories.domNode);
 				
 				this._organisations = new ItemParametersWidget();
 				this._organisations.title = "Organisations";
@@ -54,25 +50,48 @@ define([
 				this._organisations.pageSize = 6;
 				this._organisations.mapItemUrls = this.config.mapItemUrls;
 				this._organisations.map = this.map;
-				this._organisations.placeAt(this, 2);
+				this._organisations.placeAt(this);
 				this._organisations.on("showPanelEvent", lang.hitch(this, this._showPanel));
-				domClass.add(this._organisations.domNode, "view-stack");
+				this._configureAsPanel(this._organisations.domNode);
+				
+				this._tags = new ItemParametersWidget();
+				this._tags.title = "Tags";
+				this._tags.isCloud = true;
+				this._tags.baseUri = searchUri;
+				this._tags.pageSize = 6;
+				this._tags.mapItemUrls = this.config.mapItemUrls;
+				this._tags.map = this.map;
+				this._tags.placeAt(this);
+				this._tags.on("showPanelEvent", lang.hitch(this, this._showPanel));
+				this._configureAsPanel(this._tags.domNode);
 				
 				this._configureSearchElements();
 				this.resize();
 			},
 			_showPanel:function(panelName){
-				domClass.remove(this._home.domNode, "view-stack-focus");
-				domClass.remove(this._categories.domNode, "view-stack-focus");
-				domClass.remove(this._organisations.domNode, "view-stack-focus");
+				this._removePanelFocus(this._home.domNode);
+				this._removePanelFocus(this._categories.domNode);
+				this._removePanelFocus(this._organisations.domNode);
+				this._removePanelFocus(this._tags.domNode);
 				
 				if(panelName == "Home"){
-					domClass.add(this._home.domNode, "view-stack-focus");
+					this._setPanelFocus(this._home.domNode);
 				}else if(panelName =="Category"){
-					domClass.add(this._categories.domNode, "view-stack-focus");
+					this._setPanelFocus(this._categories.domNode);
 				}else if(panelName == "Organisation"){
-					domClass.add(this._organisations.domNode, "view-stack-focus");
+					this._setPanelFocus(this._organisations.domNode);
+				}else if(panelName == "Tags"){
+						this._setPanelFocus(this._tags.domNode);
 				}
+			},
+			_configureAsPanel:function(panelNode){
+				domClass.add(panelNode, "view-stack");
+			},
+			_removePanelFocus:function(panelNode){
+				domClass.remove(panelNode, "view-stack-focus");
+			},
+			_setPanelFocus:function(panelNode){
+				domClass.add(panelNode, "view-stack-focus");
 			},
 			_configureSearchElements:function(){
 			
@@ -95,14 +114,13 @@ define([
 				this._organisations.items(organisations);
 			},
 			_configureTags:function(tags){
-				console.log("Populate Tag Cloud");
-			},
-			searchHome:function(/* Event */ e){
-				this._viewController.focusView('searchHome');
+				this._tags.items(tags);
 			},
 			resize: function(){
 				this._home.resize(); 	
 				this._categories.resize();
+				this._organisations.resize();
+				this._tags.resize();
 			}		
 	});
 
