@@ -11,14 +11,25 @@ define([
 			pageSize:6,
 			page:1,
 			orderBy:"MostRecent",
-			requestSearchResults:function(searchParameters){
+			type:"",
+			searchText:"", 
+			requestSearchResults:function(){
 				
 				var requestUri = this.baseUri + "?";
+				var parameters = "";
 				
-				if(searchParameters){
-					requestUri += searchParameters + "&";
+				if(this.searchText){
+					
+					parameters = this.searchText;
+					
+					if(this.type){
+						parameters = this.type + ":" + parameters;
+					}
+					
+					parameters = "SearchText=[" + parameters + "]&";
 				}
 				
+				requestUri += parameters;
 				requestUri += "PageSize=" + this.pageSize;
 				requestUri += "&Page=" + this.page;
 				requestUri += "&OrderBy=" + this.orderBy;
