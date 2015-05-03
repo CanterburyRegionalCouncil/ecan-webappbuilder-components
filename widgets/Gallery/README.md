@@ -18,18 +18,20 @@ The widget is dependent on the bootstrap.css. The following file needs to be add
 ##Configuration##
 The following parameters are configurable through the widgets config.json file.
 
-``JSON {
+```JSON 
+{
     "portalApiUri": "[URL To the Portal API (currently - http://test.canterburymaps.govt.nz/portalapi/)]",
     "configPath": "[Path for searching configration data (currently - TagData)]",
-    "searchPath": [Path for searching configration data (currently - MapGallerySearch)]",
+    "searchPath": "[Path for searching configration data (currently - MapGallerySearch)]",
 	"description": "Text description displayed in the home widget", 
-    "pageSize": [Number of ItemsThumbs showed in a single results page as an int (currently -6)],
+    "pageSize": "[Number of ItemsThumbs showed in a single results page as an int (currently -6)]",
     "orderBy": "[The order items results are returned (currently - MostRecent)]",
     "mapItemUrls": {
         "basicUrl": "[The url of the viewer (in development this is - http://localhost/GalleryWidget)]",
         "itemDetailsUrl": "[The URL of the details page (currently - http://canterburymaps.govt.nz/Map/)]"
     }
-}```
+}
+```
 
 
 ##Widget Structure##
