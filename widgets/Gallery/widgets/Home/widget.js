@@ -12,6 +12,7 @@ define([
 			pageSize:6,
 			mapItemUrls:null,
 			map:null,
+			geometryService:null,
 			_resultsWidgetAll:null,
 			startup:function(){
 				this.inherited(arguments);
@@ -21,6 +22,7 @@ define([
 				this._resultsWidgetAll.pageSize = this.pageSize;
 				this._resultsWidgetAll.mapItemUrls = this.mapItemUrls;
 				this._resultsWidgetAll.map = this.map;
+				this._resultsWidgetAll.geometryService = this.geometryService;
 				this._resultsWidgetAll.placeAt(this.searchItemsNode, "last");
 				this._resultsWidgetAll.searchMapsAndApps();
 				
@@ -29,6 +31,7 @@ define([
 				this._resultsWidget.pageSize = this.pageSize;
 				this._resultsWidget.mapItemUrls = this.mapItemUrls;
 				this._resultsWidget.map = this.map;
+				this._resultsWidget.geometryService = this.geometryService;
 				this._resultsWidget.placeAt(this.searchResultsNode);
 			},
 			searchText:function(/* Event */ e){
@@ -60,6 +63,7 @@ define([
 			},
 			_showItemsClick:function(/*Event*/ e){
 				e.preventDefault();
+				this._resultsWidget.clearResults();
 				this._showItems();
 			},
 			_showItems:function(){

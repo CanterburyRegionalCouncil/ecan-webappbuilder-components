@@ -2,7 +2,7 @@
 	<div class="gallery-result-image widget-responsive">
 		<a data-dojo-attach-point="resultLinkNode" href="${_imageLink}" target="_blank">
 			<img data-dojo-attach-point="resultImageNode" class="img-responsive" src="${_imageSrc}" alt="${_imageAlt}">
-			<div class="gallery-result-type glyphicon glyphicon-phone" title="App"></div>
+			<div data-dojo-attach-point="resultGlyphiconNode" class="gallery-result-type glyphicon" title="App"></div>
 		</a>
 	</div>
 	<div class="caption">
@@ -11,7 +11,7 @@
 			<p class="gallery-result-snippet" data-dojo-attach-point="resultTitleSnippet">${_snippet}</p>
 		</div>
 		<div class="btn-group">	
-			<a data-dojo-attach-point="resultOpenButtonNode" href="${_btnLink}" target="_blank" class="btn btn-xs btn-primary" role="button">Open</a>
+			<a data-dojo-attach-point="resultOpenButtonNode" href="${_btnLink}" target="${_btnTarget}" class="btn btn-xs btn-primary" role="button">Open</a>
 		</div>
 		<a data-dojo-attach-event="click:_openDetails" href="#" class="btn btn-xs btn-default" role="button">Details</a>
 		<p></p>

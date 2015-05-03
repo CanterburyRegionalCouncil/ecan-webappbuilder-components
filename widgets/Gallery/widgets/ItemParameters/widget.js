@@ -19,6 +19,7 @@ define([
 			pageSize:6,
 			mapItemUrls:null,
 			map:null,
+			geometryService:null,
 			isCloud:false,
 			_searchItemContainerNode:null,
 			startup:function(){
@@ -34,6 +35,7 @@ define([
 				this._resultsWidget.pageSize = this.pageSize;
 				this._resultsWidget.mapItemUrls = this.mapItemUrls;
 				this._resultsWidget.map = this.map;
+				this._resultsWidget.geometryService = this.geometryService;
 				this._resultsWidget.placeAt(this.searchResultsNode);
 			},
 			_createItemContainerNode:function(){
@@ -82,6 +84,7 @@ define([
 			},
 			_showItemsClick:function(/*Event*/ e){
 				e.preventDefault();
+				this._resultsWidget.clearResults();
 				this._showItems();
 			},
 			_showItems:function(){

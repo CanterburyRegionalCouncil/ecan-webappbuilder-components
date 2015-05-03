@@ -10,14 +10,14 @@ define([
 	'dijit/_TemplatedMixin',
 	'./js/MapGallerySearch',
 	'./../Pagination/widget',
-	'./../ItemThumbMap/Widget',
-	'./../ItemThumbApp/Widget',
+	'./../ItemThumb/Widget',
 	'dojo/text!./template/widget.html',
-	],function(declare, arrayUtil, lang, query, domConstruct, domGeom, domClass, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, MapThumb, AppThumb, widgetTemplate){
+	],function(declare, arrayUtil, lang, query, domConstruct, domGeom, domClass, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, ItemThumb, widgetTemplate){
 	
 		return declare('ResultsWidget', [_WidgetBase, _TemplatedMixin, MapGallerySearch],{
 			templateString:widgetTemplate,
 			map:null, 
+			geometryService:null,
 			_webMaps:[],
 			pageSize:0,
 			page:1,
@@ -43,6 +43,7 @@ define([
 			clearResults:function(){
 				this.page = 1;
 				this.updatePagination = true;
+				this._removeExistingPagination();
 				this._removeAllThumbs();
 			},
 			_showResults:function(){
@@ -79,16 +80,11 @@ define([
 			},
 			_appendThumb:function(webItem){
 				
-				var itemThumb = null;
-				
-				if(webItem.Type == "Web Mapping Application"){
-					itemThumb = new AppThumb(this.mapItemUrls, webItem);
-				}else{ //Else it is a web map
-					itemThumb = new MapThumb(this.mapItemUrls, webItem);
-					itemThumb.map = this.map;
-				}
-				
+				var itemThumb = new ItemThumb(this.mapItemUrls, webItem);
+				itemThumb.map = this.map;
+				itemThumb.geometryService = this.geometryService;
 				itemThumb.placeAt(this.galleryResultsContainerNode, 'last');
+				
 			},
 			_changePage:function(/*Event*/ e){
 				this._removeAllThumbs();

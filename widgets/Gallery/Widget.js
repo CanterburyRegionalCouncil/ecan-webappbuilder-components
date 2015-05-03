@@ -5,10 +5,11 @@ define([
 		'dojo/on',
 		'dojo/dom-class',
 		'jimu/BaseWidget', 
+		'esri/config',
 		'./widgets/Home/widget',
 		'./js/SearchParameters',
 		'./widgets/ItemParameters/Widget'
-	],function(declare, event, lang, on, domClass, BaseWidget, HomeWidget, SearchParameters, ItemParametersWidget) {
+	],function(declare, event, lang, on, domClass, BaseWidget, esriConfig, HomeWidget, SearchParameters, ItemParametersWidget) {
   
 		return declare([BaseWidget], {
 			
@@ -26,12 +27,14 @@ define([
 			},
 			_injectPanelsIntoWidget:function(){
 				var searchUri = this.config.portalApiUri + "/" + this.config.searchPath;
+				var geometryService = esriConfig.defaults.geometryService;
 				
 				this._home = new HomeWidget();
 				this._home.baseUri = searchUri;
 				this._home.pageSize = 6;
 				this._home.mapItemUrls = this.config.mapItemUrls;
 				this._home.map = this.map;
+				this._home.geometryService = geometryService;
 				this._home.placeAt(this);
 				this._home.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._home.domNode);
@@ -43,6 +46,7 @@ define([
 				this._categories.pageSize = 6;
 				this._categories.mapItemUrls = this.config.mapItemUrls;
 				this._categories.map = this.map;
+				this._categories.geometryService = geometryService;
 				this._categories.placeAt(this);
 				this._categories.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._categories.domNode);
@@ -53,6 +57,7 @@ define([
 				this._organisations.pageSize = 6;
 				this._organisations.mapItemUrls = this.config.mapItemUrls;
 				this._organisations.map = this.map;
+				this._organisations.geometryService = geometryService;
 				this._organisations.placeAt(this);
 				this._organisations.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._organisations.domNode);
@@ -64,6 +69,7 @@ define([
 				this._tags.pageSize = 6;
 				this._tags.mapItemUrls = this.config.mapItemUrls;
 				this._tags.map = this.map;
+				this._tags.geometryService = geometryService;
 				this._tags.placeAt(this);
 				this._tags.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._tags.domNode);
