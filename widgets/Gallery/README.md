@@ -9,12 +9,10 @@ This widget does not dynamically search for items on ArcGIS Online. ECAN have a 
 When a user clicks on a web map or app the item itself is opened directly from ArcGIS Online.
 
 ##Dependencies##
-The widget is dependent on the following files and need to be added to the app's init.js file as per the instructions [here](https://developers.arcgis.com/web-appbuilder/sample-code/add-a-third-party-library.htm). As Bootstrap is dependent on jquery - it needs to be added first.
+The widget is dependent on the bootstrap.css. The following file needs to be added to the app's init.js file as per the instructions [here](https://developers.arcgis.com/web-appbuilder/sample-code/add-a-third-party-library.htm).
 
 ```JS
-'https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js',
-'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css',
-'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'  
+'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css',  
 ```
 
 
