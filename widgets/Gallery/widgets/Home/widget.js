@@ -12,10 +12,13 @@ define([
 			pageSize:6,
 			mapItemUrls:null,
 			map:null,
+			description:"", 
 			geometryService:null,
 			_resultsWidgetAll:null,
 			startup:function(){
 				this.inherited(arguments);
+				
+				this.searchDescriptionNode.textContent = this.description;
 				
 				this._resultsWidgetAll = new ResultsWidget();
 				this._resultsWidgetAll.baseUri = this.baseUri;

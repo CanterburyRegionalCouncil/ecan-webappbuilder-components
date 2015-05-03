@@ -31,6 +31,7 @@ define([
 				
 				this._home = new HomeWidget();
 				this._home.baseUri = searchUri;
+				this._home.description = this.config.description;
 				this._home.pageSize = 6;
 				this._home.mapItemUrls = this.config.mapItemUrls;
 				this._home.map = this.map;
