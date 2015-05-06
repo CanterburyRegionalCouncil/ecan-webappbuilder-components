@@ -8,7 +8,7 @@ define([
 		'dojo/text!./template/Widget.html',
 		'./../../js/ExtentUtilities'
 	],function(declare, lang, on, domClass, _WidgetBase, _TemplatedMixin, widgetTemplate, ExtentUtilities){
-		return declare('ItemThumbAppWidget',[_WidgetBase, _TemplatedMixin, ExtentUtilities],{
+		return declare('ItemThumbWidget',[_WidgetBase, _TemplatedMixin, ExtentUtilities],{
 			templateString:widgetTemplate,
 			map:null, 
 			_urls:null,
@@ -57,7 +57,7 @@ define([
 				
 			},_openDetails:function(/*Event*/ e){
 				e.preventDefault();
-				var url = this._urls.itemDetailsUrl + "?webmap=" + this._webApp.Id;
+				var url = this._urls.itemDetailsUrl + "?webmap=" + this._item.Id;
 				window.open(url, '_blank');
 			},
 			
@@ -66,9 +66,6 @@ define([
 			
 			_imageSrc:"",
 			_setImageSrcAttr:{node: "resultImageNode", type: "attribute", attribute: "src" },
-			
-			_imageAlt:"",
-			_setImageAltAttr:{node: "resultImageNode", type: "attribute", attribute: "alt" },
 			
 			_imageAlt:"",
 			_setImageAltAttr:{node: "resultImageNode", type: "attribute", attribute: "alt" },
