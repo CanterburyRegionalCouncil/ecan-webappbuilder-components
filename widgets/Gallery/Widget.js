@@ -8,7 +8,8 @@ define([
 		'esri/config',
 		'./widgets/Home/widget',
 		'./js/SearchParameters',
-		'./widgets/ItemParameters/Widget'
+		'./widgets/ItemParameters/Widget',
+		'xstyle/css!./css/bootstrap.min.css'
 	],function(declare, event, lang, on, domClass, BaseWidget, esriConfig, HomeWidget, SearchParameters, ItemParametersWidget) {
   
 		return declare([BaseWidget], {
