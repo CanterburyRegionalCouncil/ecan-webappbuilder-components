@@ -44,7 +44,8 @@ define([
 				}	
 			},			
 			_openAppWithWebMapAtCurrentExtent:function(/*Event*/ e){
-				this.extentToGeographicString();
+				//this.extentToGeographicString();
+				this._currentExtentToURLParameters();
 			},
 			projectionStringReady:function(projectionString){
 				this.inherited(arguments);
@@ -53,7 +54,7 @@ define([
 				url += "?webmap=" + this._item.Id; 
 				url += "&extent=" + projectionString;
 				
-				window.open(url, '_blank');
+				window.open(url, '_self');
 				
 			},_openDetails:function(/*Event*/ e){
 				e.preventDefault();

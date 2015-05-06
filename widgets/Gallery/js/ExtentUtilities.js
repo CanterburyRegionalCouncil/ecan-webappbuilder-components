@@ -8,18 +8,8 @@ define([
 		return declare('ExtentUtilities', [], {
 			geometryService:null,
 			map:null,
-			logExtent:function(){
-				var extent = this.map.extent;
-				var extentString = "";
-				extentString += extent.xmin + ",";
-				extentString += extent.ymin + ",";
-				extentString += extent.xmax + ",";
-				extentString += extent.ymax + ",";
-				extentString += "2193";
-				console.log(extentString);
-			},
 			extentToGeographicString:function(){
-				this.logExtent();
+				
 				if(this.map.geographicExtent){
 					this._processGeographicExtent();
 				}else{
@@ -51,6 +41,18 @@ define([
 				extentString += number.format(extent.ymax, {places: 4}) + ",";
 				
 				return extentString;
+			},
+			_currentExtentToURLParameters:function(){
+				var extent = this.map.extent;
+				
+				var extentParameters = "";
+				extentParameters += extent.xmin + ",";
+				extentParameters += extent.ymin + ",";
+				extentParameters += extent.xmax + ",";
+				extentParameters += extent.ymax + ",";
+				extentParameters += this.map.spatialReference.wkid
+				
+				this.projectionStringReady(extentParameters);
 			},
 			projectionStringReady:function(projectionString){
 				//To be overridden;
