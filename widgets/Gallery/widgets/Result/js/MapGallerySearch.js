@@ -13,13 +13,21 @@ define([
 			orderBy:"MostRecent",
 			type:"",
 			searchText:"", 
+			isFreeText:false,
 			requestSearchResults:function(){
 				
 				var requestUri = this.baseUri + "?";
 				var parameters = "";
 				
 				if(this.searchText){
-					parameters = "SearchText=[" + this.searchText + "]&";
+				
+					parameters = this.searchText
+					
+					if(!this.isFreeText){
+						parameters = "[" + parameters + "]";
+					}
+					
+					parameters = "SearchText=" + parameters + "&";
 				}
 				
 				requestUri += parameters;

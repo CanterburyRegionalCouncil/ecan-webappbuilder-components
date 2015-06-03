@@ -35,6 +35,7 @@ define([
 				this._resultsWidget.mapItemUrls = this.mapItemUrls;
 				this._resultsWidget.map = this.map;
 				this._resultsWidget.geometryService = this.geometryService;
+				this._resultsWidget.isFreeText = true;
 				this._resultsWidget.placeAt(this.searchResultsNode);
 			},
 			searchText:function(/* Event */ e){
