@@ -8,39 +8,27 @@ define([
 		return declare('ExtentUtilities', [], {
 			geometryService:null,
 			map:null,
-			extentToGeographicString:function(){
-				
-				if(this.map.geographicExtent){
-					this._processGeographicExtent();
-				}else{
-					this._processProjectExtent();
-				}
-			},
-			_processGeographicExtent:function(){
-				var extentParameters = this._extentToString(this.map.extent);
-				this.projectionStringReady(extentParameters);
-			},
-			_processProjectExtent:function(){
-				var outSR = new SpatialReference(4326);
+			_reprojectExtentToUrlParameters:function(newWKID){
+				var outSR = new SpatialReference(newWKID);
 				var extent = this.map.extent;
 				
 				this.geometryService.project([extent], outSR, lang.hitch(this, this._projectResults));
 			},
 			_projectResults:function(projectedExents){
-				var geographicExtent = projectedExents[0]; //Only one so grab the first;
-				var extentParameters = this._extentToString(geographicExtent);
+				var projectedExtent = projectedExents[0]; //Only one so grab the first;
+				var extentParameters = this._extentToString(projectedExtent);
 				this.projectionStringReady(extentParameters);
 			},
 			_extentToString:function(extent){
 				
-				var extentString = "";
+				var extentParameters = "";
+				extentParameters += extent.xmin + ",";
+				extentParameters += extent.ymin + ",";
+				extentParameters += extent.xmax + ",";
+				extentParameters += extent.ymax + ",";
+				extentParameters += extent.spatialReference.wkid;
 				
-				extentString += number.format(extent.xmin, {places: 4}) + ",";
-				extentString += number.format(extent.ymin, {places: 4}) + ",";
-				extentString += number.format(extent.xmax, {places: 4}) + ",";
-				extentString += number.format(extent.ymax, {places: 4}) + ",";
-				
-				return extentString;
+				return extentParameters;
 			},
 			_currentExtentToURLParameters:function(){
 				var extent = this.map.extent;
@@ -50,7 +38,7 @@ define([
 				extentParameters += extent.ymin + ",";
 				extentParameters += extent.xmax + ",";
 				extentParameters += extent.ymax + ",";
-				extentParameters += this.map.spatialReference.wkid
+				extentParameters += this.map.spatialReference.wkid;
 				
 				this.projectionStringReady(extentParameters);
 			},

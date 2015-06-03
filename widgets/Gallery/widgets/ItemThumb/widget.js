@@ -42,10 +42,17 @@ define([
 					domClass.add(this.resultGlyphiconNode, "glyphicon-globe");
 					on(this.resultOpenButtonNode, "click", lang.hitch(this, this._openAppWithWebMapAtCurrentExtent));
 				}	
+				
 			},			
 			_openAppWithWebMapAtCurrentExtent:function(/*Event*/ e){
-				//this.extentToGeographicString();
-				this._currentExtentToURLParameters();
+
+				if(this._isSpatialReferenceMatch()){
+					this._currentExtentToURLParameters();
+				}else{
+					var newWKID = this._item.SpatialReferenceWKID;
+					this._reprojectExtentToUrlParameters(newWKID);
+				}
+				
 			},
 			projectionStringReady:function(projectionString){
 				this.inherited(arguments);
@@ -58,8 +65,12 @@ define([
 				
 			},_openDetails:function(/*Event*/ e){
 				e.preventDefault();
+				
 				var url = this._urls.itemDetailsUrl + "?webmap=" + this._item.Id;
 				window.open(url, '_blank');
+			},
+			_isSpatialReferenceMatch:function(){
+				return (this.map.spatialReference.wkid === this._item.SpatialReferenceWKID);
 			},
 			
 			_imageLink:"",
