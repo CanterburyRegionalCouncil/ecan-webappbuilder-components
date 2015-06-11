@@ -28,11 +28,12 @@ define([
     'jimu/BaseWidget',
     'jimu/PoolControllerMixin',
     'jimu/utils',
+	'dojo/window',
     'dojo/NodeList-manipulate',
-    'dojo/NodeList-fx'
+    'dojo/NodeList-fx',
   ],
   function(declare, lang, array, html, topic, aspect, query, on, mouse, fx,
-    BaseWidget, PoolControllerMixin, utils) {
+    BaseWidget, PoolControllerMixin, utils, win) {
 
     var clazz = declare([BaseWidget, PoolControllerMixin], {
 
@@ -64,6 +65,11 @@ define([
         this.inherited(arguments);
         this.createTabs();
         this.widgetManager.minimizeWidget(this);
+		
+		var viewPort = win.getBox();
+		
+		if(viewPort.w >= 768)
+			this._doResize();
       },
 
       getOpenedIds: function() {
