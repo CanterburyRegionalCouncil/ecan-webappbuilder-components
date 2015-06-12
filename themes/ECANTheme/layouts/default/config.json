@@ -110,9 +110,6 @@
     }, {
       "uri": "widgets/AttributeTable/Widget",
       "positionRelativeTo": "browser",
-      "position": {
-        "bottom": 24
-      },
       "version": "1.2"
     }, {
       "uri": "widgets/Splash/Widget",
