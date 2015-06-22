@@ -10,7 +10,7 @@ define([
 	'dijit/_TemplatedMixin',
 	'./js/MapGallerySearch',
 	'./../Pagination/widget',
-	'./../ItemThumb/Widget',
+	'./../ItemThumb/widget',
 	'dojo/text!./template/widget.html',
 	],function(declare, arrayUtil, lang, query, domConstruct, domGeom, domClass, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, ItemThumb, widgetTemplate){
 	
