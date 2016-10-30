@@ -38,8 +38,6 @@ define([
 					this.resultsBreadCrumbTitle.innerHTML = this.title;
 				}
 
-
-
 				this._createItemContainerNode();
 
 				this._resultsWidget = new ResultWidget();
