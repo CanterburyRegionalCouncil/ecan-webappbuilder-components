@@ -1,0 +1,12 @@
+{
+    "portalApiUri": "http://test.canterburymaps.govt.nz/portalapi/",
+    "configPath": "TagData",
+    "searchPath": "MapGallerySearch",
+	"description": "The gallery contains a list of interactive maps that display information on a variety of subjects and purpose built custom applications (apps) such as story maps that have been built for a specific purpose.", 
+    "pageSize": 6,
+    "orderBy": "MostRecent",
+    "mapItemUrls": {
+        "basicUrl": "/",
+        "itemDetailsUrl": "http://canterburymapstest.azurewebsites.net/map"
+    }
+}

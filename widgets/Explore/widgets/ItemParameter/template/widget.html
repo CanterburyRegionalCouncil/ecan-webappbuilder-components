@@ -1,0 +1,17 @@
+<li data-dojo-type="dojox/mobile/ListItem" class="list-group-item" data-dojo-attach-event="click:_onClick">
+	
+	<span class="badge" aria-hidden="true" data-dojo-attach-point="badgeNode">${badgeCount}</span>
+
+	<div class="gallery-parameter clearfix">
+		<div data-dojo-attach-point="parameterImageNode" class="gallery-parameter-image pull-left hide">
+			<a href="#" data-dojo-attach-point="imageLinkNode" title="${title}" data-dojo-attach-event="click:_onClick">
+				<img data-dojo-attach-point="imageNode" src="${imageUrl}" alt="${title}">
+			</a>
+		</div>
+		<div class="gallery-parameter-title pull-left">
+			<a href="#" data-dojo-attach-point="titleNode" 
+				title="${itemCount}">${innerText}</a>
+		</div>
+	
+	</div>
+</li> 
