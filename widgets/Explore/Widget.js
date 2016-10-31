@@ -27,16 +27,14 @@ define([
 				this.resize();
 			},
 			_injectPanelsIntoWidget:function(){
-				var searchUri = this.config.portalApiUri + "/" + this.config.searchPath;
-				var geometryService = esriConfig.defaults.geometryService;
 
 				this._home = new HomeWidget();
-				this._home.baseUri = searchUri;
+				this._home.baseUri = this.config.portalApiUri;
 				this._home.description = this.config.description;
 				this._home.pageSize = 6;
 				this._home.mapItemUrls = this.config.mapItemUrls;
 				this._home.map = this.map;
-				this._home.geometryService = geometryService;
+				this._home.geometryService = esriConfig.defaults.geometryService;
 				this._home.placeAt(this);
 				this._home.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._home.domNode);
@@ -44,22 +42,24 @@ define([
 
 				this._categories = new ItemParametersWidget();
 				this._categories.title = "Categories";
-				this._categories.baseUri = searchUri;
+				this._categories.baseUri = this.config.portalApiUri;
+				this._categories.webMapGroupType = "WebMapGroupsForCategories";
 				this._categories.pageSize = 6;
 				this._categories.mapItemUrls = this.config.mapItemUrls;
 				this._categories.map = this.map;
-				this._categories.geometryService = geometryService;
+				this._categories.geometryService = esriConfig.defaults.geometryService;
 				this._categories.placeAt(this);
 				this._categories.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._categories.domNode);
 
 				this._organisations = new ItemParametersWidget();
 				this._organisations.title = "Organisations";
-				this._organisations.baseUri = searchUri;
+				this._organisations.baseUri = this.config.portalApiUri;
+				this._organisations.webMapGroupType = "WebMapGroupsForOrganisations";
 				this._organisations.pageSize = 6;
 				this._organisations.mapItemUrls = this.config.mapItemUrls;
 				this._organisations.map = this.map;
-				this._organisations.geometryService = geometryService;
+				this._organisations.geometryService = esriConfig.defaults.geometryService;
 				this._organisations.placeAt(this);
 				this._organisations.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._organisations.domNode);
@@ -88,22 +88,11 @@ define([
 			},
 			_retrieveSearchParameters:function(){
 
-				var baseUri = this.config.portalApiUri;
-
 				var searchParameters = new SearchParameters();
-				searchParameters.uri = baseUri + "/" + this.config.configPath;
-
-				searchParameters.on("onCategoriesRetrievedEvent", lang.hitch(this, this._configureCategories));
-				searchParameters.on("onOrganisationsRetrievedEvent", lang.hitch(this, this._configureOrganisations));
+				searchParameters.uri = this.config.portalApiUri + "/" + this.config.configPath;
 				searchParameters.on("onSearchResultsRetreived", lang.hitch(this, this._configureResults));
-
 				searchParameters.requestSearchParameters();
 
-			},_configureCategories:function(categories){
-				this._categories.items(categories);
-			},
-			_configureOrganisations:function(organisations){
-				this._organisations.items(organisations);
 			},
 			resize: function(){
 				this._home.resize();

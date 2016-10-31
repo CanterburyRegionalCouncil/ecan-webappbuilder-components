@@ -26,9 +26,23 @@ define([
 			updatePagination:true,
 			mapItemUrls:null,
 			webMaps:null,
+			showResults:function(response){
+
+				this._removeAllThumbs();
+
+				if(response.TotalCount === 0){
+					this._showAlert();
+				}
+				else{
+					this.webMaps = response.Results;
+					this._appendThumbs(response.Results);
+					this._configurePagination(response.TotalCount);
+					this._showResults();
+				}
+			},
 			searchMapsAndApps:function(searchText){
-				this.page = 1;
-				this.requestSearchResults();
+				//this.page = 1;
+				//this.requestSearchResults();
 			},
 			searchResultsRequestResponse:function(results){
 
