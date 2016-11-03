@@ -6,18 +6,16 @@ define([
 		'dijit/_WidgetBase',
 		'dijit/_TemplatedMixin',
 		'dojo/text!./template/Widget.html',
-		'./../../js/ExtentUtilities'
-	],function(declare, lang, on, domClass, _WidgetBase, _TemplatedMixin, widgetTemplate, ExtentUtilities){
-		return declare('ItemThumbWidget',[_WidgetBase, _TemplatedMixin, ExtentUtilities],{
+	],function(declare, lang, on, domClass, _WidgetBase, _TemplatedMixin, widgetTemplate){
+		return declare('ItemThumbWidget',[_WidgetBase, _TemplatedMixin],{
 			templateString:widgetTemplate,
 			map:null,
-			_urls:null,
 			_item:null,
 			constructor:function(urls, item){
 
-				this._urls = urls;
 				this._item = item;
 				this._item.isWebMap = this._isWebMap();
+				this._urls = urls;
 
 				this.set("_imageSrc", "http://www.arcgis.com/sharing/rest/content/items/" + item.Id + "/info/" + item.ThumbnailUrl);
 				this.set("_imageAlt", item.Title);
@@ -40,28 +38,25 @@ define([
 				if(this._item.isWebMap){
 					domClass.add(this.resultGlyphiconNode, "glyphicon-globe");
 					on(this.resultOpenButtonNode, "click", lang.hitch(this, this._openAppWithWebMapAtCurrentExtent));
+					on(this.resultImageNode, "click", lang.hitch(this, this._openAppWithWebMapAtCurrentExtent));
 				}else{
 					domClass.add(this.resultGlyphiconNode, "glyphicon-phone");
 				}
 			},
 			_openAppWithWebMapAtCurrentExtent:function(/*Event*/ e){
+					e.preventDefault();
+					
+					var exent = "";
+					exent += this.map.extent.xmin + ",";
+					exent += this.map.extent.ymin + ",";
+					exent += this.map.extent.xmax + ",";
+					exent += this.map.extent.ymax + ",";
+					exent += this.map.extent.spatialReference.wkid;
 
-				if(this._isSpatialReferenceMatch()){
-					this._currentExtentToURLParameters();
-				}else{
-					var newWKID = this._item.SpatialReferenceWKID;
-					this._reprojectExtentToUrlParameters(newWKID);
-				}
+					var url = this._item.Url.replace("{id}", this._item.Id);
+					url += "&extent=" + exent;
 
-			},
-			projectionStringReady:function(projectionString){
-				this.inherited(arguments);
-
-				var url = this._urls.basicUrl;
-				url += "?webmap=" + this._item.Id;
-				url += "&extent=" + projectionString;
-
-				window.open(url, '_self');
+					window.open(url, '_self');
 
 			},_openDetails:function(/*Event*/ e){
 				e.preventDefault();
@@ -69,14 +64,10 @@ define([
 				var url = this._urls.itemDetailsUrl + "?webmap=" + this._item.Id;
 				window.open(url, '_blank');
 			},
-			_isSpatialReferenceMatch:function(){
-				return (this.map.spatialReference.wkid === this._item.SpatialReferenceWKID);
-			},
 			_isWebMap:function(){
 				url = this._item.Url;
 				endIndex = url.length;
 				startIndex = endIndex - 4; //to account for {id}
-				console.log(url.substring(startIndex, endIndex));
 				return url.substring(startIndex, endIndex) === "{id}";
 			},
 

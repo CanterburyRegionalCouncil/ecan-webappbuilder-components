@@ -36,7 +36,7 @@ define([
 				retrieveWebMapGroups.baseUri = this.baseUri;
 				retrieveWebMapGroups.type = this.webMapGroupType;
 				retrieveWebMapGroups.on("onGroupsRetrievedEvent",
-					lang.hitch(this, this._configureGroups));
+				lang.hitch(this, this._configureGroups));
 				retrieveWebMapGroups.request();
 
 				this._retrieveWebMapGroupItems = new RetrieveWebMapGroupItems();
