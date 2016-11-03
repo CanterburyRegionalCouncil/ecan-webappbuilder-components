@@ -11,12 +11,12 @@ define([
 			templateString:widgetTemplate,
 			map:null,
 			_item:null,
-			_urls:null,
-			constructor:function(urls, item){
+			_itemDetailsUrl:null,
+			constructor:function(itemDetailsUrl, item){
 
 				this._item = item;
 				this._item.isWebMap = this._isWebMap();
-				this._urls = urls;
+				this._itemDetailsUrl = itemDetailsUrl;
 
 				this.set("_imageSrc", "http://www.arcgis.com/sharing/rest/content/items/" + item.Id + "/info/" + item.ThumbnailUrl);
 				this.set("_imageAlt", item.Title);
@@ -62,7 +62,7 @@ define([
 			},_openDetails:function(/*Event*/ e){
 				e.preventDefault();
 
-				var url = this._urls.itemDetailsUrl + "?webmap=" + this._item.Id;
+				var url = this._itemDetailsUrl + "?webmap=" + this._item.Id;
 				window.open(url, '_blank');
 			},
 			_isWebMap:function(){

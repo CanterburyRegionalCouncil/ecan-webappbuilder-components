@@ -21,9 +21,7 @@ define([
 			_tags:null,
 			startup: function() {
 				this.inherited(arguments);
-
 				this._injectPanelsIntoWidget();
-				this._retrieveSearchParameters();
 				this.resize();
 			},
 			_injectPanelsIntoWidget:function(){
@@ -31,8 +29,8 @@ define([
 				this._home = new HomeWidget();
 				this._home.baseUri = this.config.portalApiUri;
 				this._home.description = this.config.description;
-				this._home.pageSize = 6;
-				this._home.mapItemUrls = this.config.mapItemUrls;
+				this._home.pageSize = this.config.pageSize;
+				this._home.itemDetailsUrl = this.config.itemDetailsUrl;
 				this._home.map = this.map;
 				this._home.geometryService = esriConfig.defaults.geometryService;
 				this._home.placeAt(this);
@@ -44,10 +42,9 @@ define([
 				this._categories.title = "Categories";
 				this._categories.baseUri = this.config.portalApiUri;
 				this._categories.webMapGroupType = "WebMapGroupsForCategories";
-				this._categories.pageSize = 6;
-				this._categories.mapItemUrls = this.config.mapItemUrls;
+				this._categories.pageSize = this.config.pageSize;;
+				this._categories.itemDetailsUrl = this.config.itemDetailsUrl;
 				this._categories.map = this.map;
-				this._categories.geometryService = esriConfig.defaults.geometryService;
 				this._categories.placeAt(this);
 				this._categories.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._categories.domNode);
@@ -56,10 +53,9 @@ define([
 				this._organisations.title = "Organisations";
 				this._organisations.baseUri = this.config.portalApiUri;
 				this._organisations.webMapGroupType = "WebMapGroupsForOrganisations";
-				this._organisations.pageSize = 6;
-				this._organisations.mapItemUrls = this.config.mapItemUrls;
+				this._organisations.pageSize = this.config.pageSize;;
+				this._organisations.itemDetailsUrl = this.config.itemDetailsUrl;
 				this._organisations.map = this.map;
-				this._organisations.geometryService = esriConfig.defaults.geometryService;
 				this._organisations.placeAt(this);
 				this._organisations.on("showPanelEvent", lang.hitch(this, this._showPanel));
 				this._configureAsPanel(this._organisations.domNode);
@@ -85,14 +81,6 @@ define([
 			},
 			_setPanelFocus:function(panelNode){
 				domClass.add(panelNode, "view-stack-focus");
-			},
-			_retrieveSearchParameters:function(){
-
-				var searchParameters = new SearchParameters();
-				searchParameters.uri = this.config.portalApiUri + "/" + this.config.configPath;
-				searchParameters.on("onSearchResultsRetreived", lang.hitch(this, this._configureResults));
-				searchParameters.requestSearchParameters();
-
 			},
 			resize: function(){
 				this._home.resize();

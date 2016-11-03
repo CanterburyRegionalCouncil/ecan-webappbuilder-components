@@ -24,9 +24,8 @@ define([
 			baseUri:"",
 			webMapGroupType:"",
 			pageSize:6,
-			mapItemUrls:null,
+			itemDetailsUrl:null,
 			map:null,
-			geometryService:null,
 			_searchItemContainerNode:null,
 			_retrieveWebMapGroupItems:null,
 			startup:function(){
@@ -59,11 +58,8 @@ define([
 				this._createItemContainerNode();
 
 				this._resultsWidget = new ResultWidget();
-				this._resultsWidget.baseUri = this.baseUri;
-				this._resultsWidget.pageSize = this.pageSize;
-				this._resultsWidget.mapItemUrls = this.mapItemUrls;
+				this._resultsWidget.itemDetailsUrl = this.itemDetailsUrl;
 				this._resultsWidget.map = this.map;
-				this._resultsWidget.geometryService = this.geometryService;
 				this._resultsWidget.placeAt(this.searchResultsNode);
 			},
 			_configureGroups:function(groups){
@@ -87,7 +83,7 @@ define([
 			_parameterClicked:function(item){
 
 				this._retrieveWebMapGroupItems.groupID = item.Id;
-				this._retrieveWebMapGroupItems.count = 10;
+				this._retrieveWebMapGroupItems.count = this.pageSize;
 				this._retrieveWebMapGroupItems.offset = 0;
 				this._retrieveWebMapGroupItems.request();
 			},
@@ -95,8 +91,6 @@ define([
 				this._resultsWidget.clearResults();
 				this._resultsWidget.updatePagination = true;
 				this._resultsWidget.showResults(response);
-				//this._resultsWidget.searchText = parameter.Tag;
-				//this._resultsWidget.searchMapsAndApps();
 				this._showResults();
 			},
 			_showHomeClick:function(/*Event*/ e){

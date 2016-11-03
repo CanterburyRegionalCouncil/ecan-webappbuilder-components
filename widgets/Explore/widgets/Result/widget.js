@@ -8,23 +8,21 @@ define([
 	'dojo/dom-class',
 	'dijit/_WidgetBase',
 	'dijit/_TemplatedMixin',
-	'./js/MapGallerySearch',
 	'./../Pagination/widget',
 	'./../ItemThumb/Widget',
 	'dojo/text!./template/widget.html',
 	"dojox/mobile",
   	"dojox/mobile/parser",
-	],function(declare, arrayUtil, lang, query, domConstruct, domGeom, domClass, _WidgetBase, _TemplatedMixin, MapGallerySearch, Pagination, ItemThumb, widgetTemplate){
+	],function(declare, arrayUtil, lang, query, domConstruct, domGeom, domClass, _WidgetBase, _TemplatedMixin, Pagination, ItemThumb, widgetTemplate){
 
-		return declare('ResultsWidget', [_WidgetBase, _TemplatedMixin, MapGallerySearch],{
+		return declare('ResultsWidget', [_WidgetBase, _TemplatedMixin],{
 			templateString:widgetTemplate,
 			map:null,
-			geometryService:null,
 			_webMaps:[],
 			pageSize:0,
 			page:1,
 			updatePagination:true,
-			mapItemUrls:null,
+			itemDetailsUrl:null,
 			webMaps:null,
 			showResults:function(response){
 
@@ -39,10 +37,6 @@ define([
 					this._configurePagination(response.TotalCount);
 					this._showResults();
 				}
-			},
-			searchMapsAndApps:function(searchText){
-				//this.page = 1;
-				//this.requestSearchResults();
 			},
 			searchResultsRequestResponse:function(results){
 
@@ -98,9 +92,8 @@ define([
 			},
 			_appendThumb:function(webItem){
 
-				var itemThumb = new ItemThumb(this.mapItemUrls, webItem);
+				var itemThumb = new ItemThumb(this.itemDetailsUrl, webItem);
 				itemThumb.map = this.map;
-				itemThumb.geometryService = this.geometryService;
 				itemThumb.placeAt(this.galleryResultsContainerNode, 'last');
 
 			},
