@@ -9,22 +9,39 @@ define([
 		'dojo/text!./template/widget.html',
 		'./../ItemParameter/widget',
 		'./../Result/widget',
+		'./../../js/RetrieveWebMapGroups',
+		'./../../js/RetrieveWebMapGroupItems',
 		"dojo/dom-construct",
 		"dojo/dom"
 
-	], function(declare, lang, arrayUtil, domConstruct, domClass, _WidgetBase, _TemplatedMixin, widgetTemplate, ItemParameterWidget, ResultWidget){
+	], function(declare, lang, arrayUtil, domConstruct, domClass, _WidgetBase,
+			_TemplatedMixin, widgetTemplate, ItemParameterWidget,
+			ResultWidget, RetrieveWebMapGroups, RetrieveWebMapGroupItems){
 
 		return declare('ParameterWidget',[_WidgetBase, _TemplatedMixin],{
 			templateString:widgetTemplate,
 			title:"Unknown",
 			baseUri:"",
+			webMapGroupType:"",
 			pageSize:6,
-			mapItemUrls:null,
+			itemDetailsUrl:null,
 			map:null,
-			geometryService:null,
 			_searchItemContainerNode:null,
+			_retrieveWebMapGroupItems:null,
 			startup:function(){
 				this.inherited(arguments);
+
+				var retrieveWebMapGroups = new RetrieveWebMapGroups();
+				retrieveWebMapGroups.baseUri = this.baseUri;
+				retrieveWebMapGroups.type = this.webMapGroupType;
+				retrieveWebMapGroups.on("onGroupsRetrievedEvent",
+				lang.hitch(this, this._configureGroups));
+				retrieveWebMapGroups.request();
+
+				this._retrieveWebMapGroupItems = new RetrieveWebMapGroupItems();
+				this._retrieveWebMapGroupItems.baseUri = this.baseUri;
+				this._retrieveWebMapGroupItems.on("onItemsRetrievedEvent",
+					lang.hitch(this, this._configureItems));
 
 				if (this.title =="Organisations")
 				{
@@ -41,38 +58,39 @@ define([
 				this._createItemContainerNode();
 
 				this._resultsWidget = new ResultWidget();
-				this._resultsWidget.baseUri = this.baseUri;
-				this._resultsWidget.pageSize = this.pageSize;
-				this._resultsWidget.mapItemUrls = this.mapItemUrls;
+				this._resultsWidget.itemDetailsUrl = this.itemDetailsUrl;
 				this._resultsWidget.map = this.map;
-				this._resultsWidget.geometryService = this.geometryService;
 				this._resultsWidget.placeAt(this.searchResultsNode);
+			},
+			_configureGroups:function(groups){
+				arrayUtil.forEach(groups, lang.hitch(this, this._configureGroup));
+			},
+			_configureGroup:function(item){
+
+				var parameterWidget = new ItemParameterWidget();
+				parameterWidget.parameter(item);
+				parameterWidget.placeAt(this._searchItemContainerNode);
+				parameterWidget.on('parameterClickEvent', lang.hitch(this,
+						this._parameterClicked));
 			},
 			_createItemContainerNode:function(){
 
-				this._searchItemContainerNode = domConstruct.toDom("<ul class='list-group' data-dojo-type='dojox/mobile/EdgeToEdgeList' ></ul>");
+				var ul = "<ul class='list-group' data-dojo-type='dojox/mobile/EdgeToEdgeList' ></ul>";
+				this._searchItemContainerNode = domConstruct.toDom(ul);
 				domClass.add(this._searchItemContainerNode, "search-item-container");
 				domConstruct.place(this._searchItemContainerNode, this.searchItemsNode);
 			},
-			items:function(items){
-				arrayUtil.forEach(items, lang.hitch(this, this._configureItem));
+			_parameterClicked:function(item){
+
+				this._retrieveWebMapGroupItems.groupID = item.Id;
+				this._retrieveWebMapGroupItems.count = this.pageSize;
+				this._retrieveWebMapGroupItems.offset = 0;
+				this._retrieveWebMapGroupItems.request();
 			},
-			_configureItem:function(parameter){
-
-				var parameterWidget = {};
-
-				parameterWidget = new ItemParameterWidget();
-				parameterWidget.parameter(parameter);
-				parameterWidget.placeAt(this._searchItemContainerNode);
-				parameterWidget.on('parameterClickEvent', lang.hitch(this, this._parameterClicked));
-			},
-			_parameterClicked:function(parameter){
-
+			_configureItems:function(response){
 				this._resultsWidget.clearResults();
 				this._resultsWidget.updatePagination = true;
-				this._resultsWidget.searchText = parameter.Tag;
-				this._resultsWidget.searchMapsAndApps();
-
+				this._resultsWidget.showResults(response);
 				this._showResults();
 			},
 			_showHomeClick:function(/*Event*/ e){
