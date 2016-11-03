@@ -1,5 +1,5 @@
 <div>
-	<div data-dojo-attach-point="searchItemsNode">
+	<div data-dojo-attach-point="searchFormNode">
 		<div class="gallery-content">
 			<p data-dojo-attach-point="searchDescriptionNode"></p>
 		</div>
@@ -21,10 +21,12 @@
 			<a class="btn btn-xs btn-default" href="#" data-dojo-attach-event="click:searchByOrganisation">Districts</a>
 		</div>
 	</div>
-	<div data-dojo-attach-point="searchResultsNode" class="hide">
+	<div data-dojo-attach-point="breadcrumbsNode" class="hide">
 		<ol class="breadcrumb">
-			<li><a href="#" data-dojo-attach-event="click:_showItemsClick">Home</a></li>
+			<li><a href="#" data-dojo-attach-event="click:_showSearchForm">Home</a></li>
 			<li class="active"><a href="#">Results</a></li>
 		</ol>
-	<div>
+	</div>
+	<div data-dojo-attach-point="searchResultsNode">
+	</div>
 </div>
