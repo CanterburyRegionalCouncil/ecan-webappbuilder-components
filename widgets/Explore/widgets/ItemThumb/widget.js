@@ -11,6 +11,7 @@ define([
 			templateString:widgetTemplate,
 			map:null,
 			_item:null,
+			_urls:null,
 			constructor:function(urls, item){
 
 				this._item = item;
@@ -45,7 +46,7 @@ define([
 			},
 			_openAppWithWebMapAtCurrentExtent:function(/*Event*/ e){
 					e.preventDefault();
-					
+
 					var exent = "";
 					exent += this.map.extent.xmin + ",";
 					exent += this.map.extent.ymin + ",";
