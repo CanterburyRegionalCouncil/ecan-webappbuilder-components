@@ -19,9 +19,9 @@ define([
 			startup:function(){
 
 				this.titleNode.textContent = item.Title;
+				this.badgeNode.textContent = this._item.Items
 				this.set("title", this._item.Title);
 				this.set("itemCount", this._item.Items + " maps & apps");
-				this.set("badgeCount", this._item.Items);
 
 
 				if(this._item.Thumbnail){

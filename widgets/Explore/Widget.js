@@ -51,15 +51,15 @@ define([
 			this._retrieveWebMapGroups = new RetrieveWebMapGroups();
 			this._retrieveWebMapGroups.baseUri = this.config.portalApiUri;
 
-			this._retrieveWebMapGroups.request(
-				"WebMapGroupsForCategories",
-				lang.hitch(this, this.__webMapGroupsForCategoriesCallback)
-			);
-
-			this._retrieveWebMapGroups.request(
-				"WebMapGroupsForOrganisations",
-				lang.hitch(this, this._webMapGroupsForOrganisationsCallback)
-			);
+			// this._retrieveWebMapGroups.request(
+			// 	"WebMapGroupsForCategories",
+			// 	lang.hitch(this, this.__webMapGroupsForCategoriesCallback)
+			// );
+			//
+			// this._retrieveWebMapGroups.request(
+			// 	"WebMapGroupsForOrganisations",
+			// 	lang.hitch(this, this._webMapGroupsForOrganisationsCallback)
+			// );
 
 		},
 		_searchTextEnterCallback:function(error, response){
@@ -100,7 +100,7 @@ define([
 			if(error){
 				throw error;
 			}else{
-				var searchResults = response;
+				var searchResults = response.Results;
 				this._defaultResults = this._queryResultToResultsList.addToResultsList(searchResults);
 				this._results.items(this._defaultResults);
 			}
