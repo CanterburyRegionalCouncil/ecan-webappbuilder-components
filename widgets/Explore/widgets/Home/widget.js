@@ -7,16 +7,18 @@ define([
 		'dojo/text!./template/widget.html',
 		'./../Result/widget',
 		'./../../js/RetrieveWebMapSearchItems',
+		'./../../js/InViewport'
 	], function(declare, lang, domClass, _WidgetBase, _TemplatedMixin, widgetTemplate,
-			ResultsWidget, RetrieveWebMapSearchItems){
+			ResultsWidget, RetrieveWebMapSearchItems, InViewport){
 		return declare('HomeWidget', [_WidgetBase, _TemplatedMixin], {
 			templateString:widgetTemplate,
 			baseUri:"",
-			_allResults:null,
 			pageSize:6,
 			itemDetailsUrl:null,
 			map:null,
 			description:"",
+			scrollDomNode:null,
+			_allResults:null,
 			startup:function(){
 				this.inherited(arguments);
 
@@ -87,7 +89,7 @@ define([
 				domClass.add(this.searchFormNode, 'hide');
 			},
 			resize:function(){
-				this._resultsWidget.resize();
+				//this._resultsWidget.resize();
 			},
 			onShowPanelEvent:function(){}
 		});

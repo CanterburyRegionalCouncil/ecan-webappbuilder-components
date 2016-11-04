@@ -6,87 +6,149 @@ define([
 		'dojo/dom-class',
 		'jimu/BaseWidget',
 		'esri/config',
-		'./widgets/Home/widget',
-		'./js/SearchParameters',
-		'./widgets/ItemParameters/Widget',
+		'./widgets/Search/widget',
+		'./widgets/Result/widget',
+		'./js/RetrieveWebMapSearchItems',
+		'./js/RetrieveWebMapGroups',
+		'./js/QueryResultToResultsList',
+		'./js/PortalItemFactory',
 		'xstyle/css!./css/bootstrap3_3_7.css'
-	],function(declare, event, lang, on, domClass, BaseWidget, esriConfig, HomeWidget, SearchParameters, ItemParametersWidget) {
+],function(declare, event, lang, on, domClass, BaseWidget, esriConfig,
+	SearchWidget, Results, RetrieveWebMapSearchItems, RetrieveWebMapGroups, QueryResponseToResultsList,
+	PortalItemFactory) {
 
-		return declare([BaseWidget], {
+	return declare([BaseWidget], {
 
-			baseClass: 'gallery-widget',
-			_home:null,
-			_categories:null,
-			_organisations:null,
-			_tags:null,
-			startup: function() {
-				this.inherited(arguments);
-				this._injectPanelsIntoWidget();
-				this.resize();
-			},
-			_injectPanelsIntoWidget:function(){
+		baseClass: 'gallery-widget',
+		startup: function() {
+			this.inherited(arguments);
 
-				this._home = new HomeWidget();
-				this._home.baseUri = this.config.portalApiUri;
-				this._home.description = this.config.description;
-				this._home.pageSize = this.config.pageSize;
-				this._home.itemDetailsUrl = this.config.itemDetailsUrl;
-				this._home.map = this.map;
-				this._home.geometryService = esriConfig.defaults.geometryService;
-				this._home.placeAt(this);
-				this._home.on("showPanelEvent", lang.hitch(this, this._showPanel));
-				this._configureAsPanel(this._home.domNode);
-				this._setPanelFocus(this._home.domNode);
+			this._searchWidget = new SearchWidget(
+				lang.hitch(this, this._searchTextEnterCallback),
+				lang.hitch(this, this._searchByCategoryButtonClickCallback),
+				lang.hitch(this, this._searchByOrganisationButtonClickCallback));
+			this._searchWidget.placeAt(this);
 
-				this._categories = new ItemParametersWidget();
-				this._categories.title = "Categories";
-				this._categories.baseUri = this.config.portalApiUri;
-				this._categories.webMapGroupType = "WebMapGroupsForCategories";
-				this._categories.pageSize = this.config.pageSize;;
-				this._categories.itemDetailsUrl = this.config.itemDetailsUrl;
-				this._categories.map = this.map;
-				this._categories.placeAt(this);
-				this._categories.on("showPanelEvent", lang.hitch(this, this._showPanel));
-				this._configureAsPanel(this._categories.domNode);
+			this._retrieveWebMapSearchItems = new RetrieveWebMapSearchItems();
+			this._retrieveWebMapSearchItems.baseUri = this.config.portalApiUri;
+			this._retrieveWebMapSearchItems.query = "";
+			this._retrieveWebMapSearchItems.count = this.config.pageSize;
+			this._retrieveWebMapSearchItems.offset = 0;
+			this._retrieveWebMapSearchItems.request(
+				lang.hitch(this, this._initialWebMapSearchItemsCallback));
 
-				this._organisations = new ItemParametersWidget();
-				this._organisations.title = "Organisations";
-				this._organisations.baseUri = this.config.portalApiUri;
-				this._organisations.webMapGroupType = "WebMapGroupsForOrganisations";
-				this._organisations.pageSize = this.config.pageSize;;
-				this._organisations.itemDetailsUrl = this.config.itemDetailsUrl;
-				this._organisations.map = this.map;
-				this._organisations.placeAt(this);
-				this._organisations.on("showPanelEvent", lang.hitch(this, this._showPanel));
-				this._configureAsPanel(this._organisations.domNode);
-			},
-			_showPanel:function(panelName){
-				this._removePanelFocus(this._home.domNode);
-				this._removePanelFocus(this._categories.domNode);
-				this._removePanelFocus(this._organisations.domNode);
+			var portalItemFactory = new PortalItemFactory(
+				this._groupItemClickedCallback,
+				this._appItemClickCallback,
+				this._webMapItemClickCallback
+			);
 
-				if(panelName == "Home"){
-					this._setPanelFocus(this._home.domNode);
-				}else if(panelName =="Category"){
-					this._setPanelFocus(this._categories.domNode);
-				}else if(panelName == "Organisation"){
-					this._setPanelFocus(this._organisations.domNode);
-				}
-			},
-			_configureAsPanel:function(panelNode){
-				domClass.add(panelNode, "view-stack");
-			},
-			_removePanelFocus:function(panelNode){
-				domClass.remove(panelNode, "view-stack-focus");
-			},
-			_setPanelFocus:function(panelNode){
-				domClass.add(panelNode, "view-stack-focus");
-			},
-			resize: function(){
-				this._home.resize();
-				this._categories.resize();
-				this._organisations.resize();
+			this._queryResultToResultsList = new QueryResultToResultsList(portalItemFactory);
+
+			this._results = new Results();
+			this._results.placeAt(this, "last");
+
+			this._retrieveWebMapGroups = new RetrieveWebMapGroups();
+			this._retrieveWebMapGroups.baseUri = this.config.portalApiUri;
+
+			this._retrieveWebMapGroups.request(
+				"WebMapGroupsForCategories",
+				lang.hitch(this, this.__webMapGroupsForCategoriesCallback)
+			);
+
+			this._retrieveWebMapGroups.request(
+				"WebMapGroupsForOrganisations",
+				lang.hitch(this, this._webMapGroupsForOrganisationsCallback)
+			);
+
+		},
+		_searchTextEnterCallback:function(error, response){
+
+		},
+		_searchByCategoryButtonClickCallback:function(error, response){
+
+		},
+		_searchByOrganisationButtonClickCallback:function(error, response){
+
+		},
+		_webMapGroupsForCategoriesCallback:function(error, response){
+			if(error){
+				throw error;
+			}else{
+				var searchResults = response.Results;
+				this._categories = this._queryResultToResultsList.addToResultsList(searchResults);
 			}
-		});
-	}
-);
+		},
+		_webMapGroupsForOrganisationsCallback:function(error, response){
+			if(error){
+				throw error;
+			}else{
+				var searchResults = response;
+				this._organisations = this._queryResultToResultsList.addToResultsList(searchResults);
+			}
+		},
+		_groupItemClickedCallback:function(error, response){
+
+		},
+		_appItemClickCallback:function(error, response){
+
+		},
+		_webMapItemClickCallback:function(error, response){
+
+		},
+		_initialWebMapSearchItemsCallback:function(error, response){
+			if(error){
+				throw error;
+			}else{
+				var searchResults = response;
+				this._defaultResults = this._queryResultToResultsList.addToResultsList(searchResults);
+				this._results.items(this._defaultResults);
+			}
+		},
+		_showPanel:function(panelName){
+			this._removePanelFocus(this._home.domNode);
+			this._removePanelFocus(this._categories.domNode);
+			this._removePanelFocus(this._organisations.domNode);
+
+			if(panelName == "Home"){
+				this._setPanelFocus(this._home.domNode);
+			}else if(panelName =="Category"){
+				this._setPanelFocus(this._categories.domNode);
+			}else if(panelName == "Organisation"){
+				this._setPanelFocus(this._organisations.domNode);
+			}
+		},
+		_configureAsPanel:function(panelNode){
+			domClass.add(panelNode, "view-stack");
+		},
+		_removePanelFocus:function(panelNode){
+			domClass.remove(panelNode, "view-stack-focus");
+		},
+		_setPanelFocus:function(panelNode){
+			domClass.add(panelNode, "view-stack-focus");
+		},
+		resize: function(){
+			this._home.resize();
+			this._categories.resize();
+			this._organisations.resize();
+		}
+	});
+});
+
+//
+// var exent = "";
+// exent += this._map.extent.xmin + ",";
+// exent += this._map.extent.ymin + ",";
+// exent += this._map.extent.xmax + ",";
+// exent += this._map.extent.ymax + ",";
+// exent += this._map.extent.spatialReference.wkid;
+//
+// var url = this._item.Url.replace("{id}", this._item.Id);
+// url += "&extent=" + exent;
+//
+// window.open(url, '_self');
+
+
+//
+// var url = this._itemDetailsUrl + "?webmap=" + this._item.Id;
+// window.open(url, '_blank');
