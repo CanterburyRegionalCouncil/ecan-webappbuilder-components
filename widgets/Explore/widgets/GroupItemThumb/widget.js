@@ -19,7 +19,7 @@ define([
 			startup:function(){
 
 				this.titleNode.textContent = item.Title;
-				this.badgeNode.textContent = this._item.Items
+				this.badgeNode.textContent = this._item.Items;
 				this.set("title", this._item.Title);
 				this.set("itemCount", this._item.Items + " maps & apps");
 
@@ -33,6 +33,9 @@ define([
 
 					domClass.remove(this.parameterImageNode, 'hide');
 				}
+			},
+			_onClick:function(e){
+				this._callback(null, e);
 			}
 		});
 	});

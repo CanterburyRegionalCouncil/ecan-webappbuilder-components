@@ -24,12 +24,22 @@ function(declare, _WidgetBase, _TemplatedMixin, widgetTemplate){
 			updatePagination:true,
 			itemDetailsUrl:null,
 			webMaps:null,
-			items:function(items){
+			replaceItems:function(items){
+
+				var oldItems = this.galleryResultsContainerNode.children;
+				for(var i=oldItems.length-1 ; i>=0 ; i--){
+					oldItem = oldItems[i];
+					this.galleryResultsContainerNode.removeChild(oldItem);
+				}
+
+				this.addItems(items);
+			},
+			addItems:function(items){
 				for(var i = 0; i < items.length; i++){
 					item = items[i];
 					item.placeAt(this.galleryResultsContainerNode, 'last');
 				}
-			},
+			}
 			// showResults:function(response){
 			//
 			// 	this._removeAllThumbs();

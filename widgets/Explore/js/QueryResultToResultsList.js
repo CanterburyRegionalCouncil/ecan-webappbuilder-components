@@ -9,6 +9,8 @@ define([
     },
     addToResultsList:function(queryResult){
 
+      this._resultsList = [];
+      
       for(var i = 0; i < queryResult.length; i++){
         rawItem = queryResult[i];
         item = this._portalItemFactory.createItem(rawItem);

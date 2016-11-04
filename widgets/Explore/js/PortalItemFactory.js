@@ -14,7 +14,7 @@ define([
       var thumb = null;
 
       if(this._isGroup(rawItem)){
-          thumb= new GroupThumb(rawItem, this.groupItemCallback);
+          thumb= new GroupThumb(rawItem, this._groupItemCallback);
       }else {
         if(this._isWebMap(rawItem)){
           thumb= new MapThumb(rawItem, this._mapItemCallback);
