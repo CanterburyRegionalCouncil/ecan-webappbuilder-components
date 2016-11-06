@@ -11,12 +11,14 @@ define([
 		'./widgets/Result/widget',
 		'./js/RetrieveWebMapSearchItems',
 		'./js/RetrieveWebMapGroups',
+		'./js/RetrieveWebMapGroupItems',
 		'./js/QueryResultToResultsList',
 		'./js/PortalItemFactory',
 		'xstyle/css!./css/bootstrap3_3_7.css'
 ],function(declare, event, lang, on, domClass, BaseWidget, esriConfig,
 	SearchWidget, BreadcrumbWidget, Results, RetrieveWebMapSearchItems,
-	RetrieveWebMapGroups, QueryResponseToResultsList, PortalItemFactory) {
+	RetrieveWebMapGroups, RetrieveWebMapGroupItems, QueryResponseToResultsList,
+	PortalItemFactory) {
 
 	return declare([BaseWidget], {
 
@@ -32,6 +34,12 @@ define([
 				lang.hitch(this, this._searchByCategoryButtonClickCallback),
 				lang.hitch(this, this._searchByOrganisationButtonClickCallback));
 			this._searchWidget.placeAt(this);
+
+			this._retrieveWebMapGroupItems = new RetrieveWebMapGroupItems()
+			this._retrieveWebMapGroupItems.baseUri = this.config.portalApiUri;
+			this._retrieveWebMapGroupItems.query = "";
+			this._retrieveWebMapGroupItems.count = this.config.pageSize;
+			this._retrieveWebMapGroupItems.offset = 0;
 
 			this._retrieveWebMapSearchItems = new RetrieveWebMapSearchItems();
 			this._retrieveWebMapSearchItems.baseUri = this.config.portalApiUri;
@@ -120,7 +128,18 @@ define([
 					lang.hitch(this, this._searchByOrganisationButtonClickCallback));
 			}
 
-			// TODO: Summon Results and add them to container
+			this._retrieveWebMapGroupItems.groupID = response.Id;
+			this._retrieveWebMapGroupItems.request(
+				lang.hitch(this, this._webMapGroupItemsClickedCallback));
+		},
+		_webMapGroupItemsClickedCallback:function(error, response){
+			if(error){
+				throw error;
+			}else{
+				var searchResults = response.Results;
+				this._currentResults = this._queryResultToResultsList.addToResultsList(searchResults);
+				this._results.replaceItems(this._currentResults);
+			}
 		},
 		_appItemClickCallback:function(error, response){
 			// TODO: Implement app click

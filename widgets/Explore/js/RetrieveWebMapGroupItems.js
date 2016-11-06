@@ -27,10 +27,10 @@ define([
     },
     _response:function(response){
       var groups = response;
-      this.callback(null, groups);
+      this._callback(null, groups);
     },
     _error:function(error){
-      this.callback(groups, null);
+      this._callback(groups, null);
     }
   });
 });
