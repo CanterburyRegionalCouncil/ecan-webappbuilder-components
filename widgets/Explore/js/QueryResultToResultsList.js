@@ -7,13 +7,19 @@ define([
     constructor:function(portalItemFactory){
       this._portalItemFactory = portalItemFactory;
     },
-    addToResultsList:function(queryResult){
+    addToResultsList:function(queryResult, source){
 
       this._resultsList = [];
-      
+
       for(var i = 0; i < queryResult.length; i++){
-        rawItem = queryResult[i];
-        item = this._portalItemFactory.createItem(rawItem);
+
+        var rawItem = queryResult[i];
+
+        if(source){
+          rawItem.source = source;
+        }
+
+        var item = this._portalItemFactory.createItem(rawItem);
         this._resultsList.push(item);
       }
 

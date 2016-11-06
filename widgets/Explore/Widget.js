@@ -52,22 +52,24 @@ define([
 			this._results = new Results();
 			this._results.placeAt(this, "last");
 
-			this._retrieveWebMapGroups = new RetrieveWebMapGroups();
-			this._retrieveWebMapGroups.baseUri = this.config.portalApiUri;
+			this._retrieveWebMapGroupsCategories = new RetrieveWebMapGroups();
+			this._retrieveWebMapGroupsCategories.baseUri = this.config.portalApiUri;
 
-			this._retrieveWebMapGroups.request(
+			this._retrieveWebMapGroupsCategories.request(
 			 	"WebMapGroupsForCategories",
 			 	lang.hitch(this, this._webMapGroupsForCategoriesCallback)
 			);
-			//
-			// this._retrieveWebMapGroups.request(
-			// 	"WebMapGroupsForOrganisations",
-			// 	lang.hitch(this, this._webMapGroupsForOrganisationsCallback)
-			// );
+
+			this._retrieveWebMapGroupsOrganisations = new RetrieveWebMapGroups();
+			this._retrieveWebMapGroupsOrganisations.baseUri = this.config.portalApiUri;
+			this._retrieveWebMapGroupsOrganisations.request(
+				"WebMapGroupsForOrganisations",
+				lang.hitch(this, this._webMapGroupsForOrganisationsCallback)
+			);
 
 		},
 		_searchTextEnterCallback:function(error, response){
-
+			// TODO: Implement text search
 		},
 		_searchByCategoryButtonClickCallback:function(error, response){
 			if(this._searchWidget.domNode.parentNode)
@@ -80,13 +82,22 @@ define([
 		},
 		_searchByOrganisationButtonClickCallback:function(error, response){
 
+			if(this._searchWidget.domNode.parentNode)
+				this.domNode.removeChild(this._searchWidget.domNode);
+
+			this._breadcrumbWidget.clearTrail();
+			this._breadcrumbWidget.addWebMapGroupTitle("Districts");
+			this._breadcrumbWidget.placeAt(this, "first");
+			this._results.replaceItems(this._organisations);
 		},
 		_webMapGroupsForCategoriesCallback:function(error, response){
 			if(error){
 				throw error;
 			}else{
 				var searchResults = response;
-				this._categories = this._queryResultToResultsList.addToResultsList(searchResults);
+				this._categories = this
+					._queryResultToResultsList
+					.addToResultsList(searchResults, "WebMapGroupsForCategories");
 			}
 		},
 		_webMapGroupsForOrganisationsCallback:function(error, response){
@@ -94,18 +105,28 @@ define([
 				throw error;
 			}else{
 				var searchResults = response;
-				this._organisations = this._queryResultToResultsList.addToResultsList(searchResults);
+				this._organisations = this.
+					_queryResultToResultsList
+					.addToResultsList(searchResults, "WebMapGroupsForOrganisations");
 			}
 		},
 		_groupItemClickedCallback:function(error, response){
-			this._breadcrumbWidget.addResults(
-				lang.hitch(this, this._searchByCategoryButtonClickCallback));
+
+			if(response.source == "WebMapGroupsForCategories"){
+				this._breadcrumbWidget.addResults(
+					lang.hitch(this, this._searchByCategoryButtonClickCallback));
+			}else if (response.source == "WebMapGroupsForOrganisations") {
+				this._breadcrumbWidget.addResults(
+					lang.hitch(this, this._searchByOrganisationButtonClickCallback));
+			}
+
+			// TODO: Summon Results and add them to container
 		},
 		_appItemClickCallback:function(error, response){
-
+			// TODO: Implement app click
 		},
 		_webMapItemClickCallback:function(error, response){
-
+			// TODO: Implement web map click
 		},
 		_initialWebMapSearchItemsCallback:function(error, response){
 			if(error){

@@ -35,7 +35,7 @@ define([
 				}
 			},
 			_onClick:function(e){
-				this._callback(null, e);
+				this._callback(null, this._item);
 			}
 		});
 	});
