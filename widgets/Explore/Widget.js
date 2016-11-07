@@ -11,20 +11,23 @@ define([
 		'./widgets/Result/widget',
 		'./js/RetrieveWebMapSearchItems',
 		'./js/RetrieveWebMapGroups',
-		'./js/RetrieveWebMapGroupItems',
+		'./js/RetrieveWebMapGroupItems', 
 		'./js/QueryResultToResultsList',
 		'./js/PortalItemFactory',
+		'./js/LaunchItem',
 		'xstyle/css!./css/bootstrap3_3_7.css'
 ],function(declare, event, lang, on, domClass, BaseWidget, esriConfig,
 	SearchWidget, BreadcrumbWidget, Results, RetrieveWebMapSearchItems,
 	RetrieveWebMapGroups, RetrieveWebMapGroupItems, QueryResponseToResultsList,
-	PortalItemFactory) {
+	PortalItemFactory, LaunchItem) {
 
 	return declare([BaseWidget], {
 
 		baseClass: 'gallery-widget',
 		startup: function() {
 			this.inherited(arguments);
+
+			this._launchItem = new LaunchItem(this.map, this.config);
 
 			this._breadcrumbWidget = new BreadcrumbWidget(
 				lang.hitch(this, this._homeClickCallback));
@@ -51,8 +54,8 @@ define([
 
 			var portalItemFactory = new PortalItemFactory(
 				lang.hitch(this, this._groupItemClickedCallback),
-				lang.hitch(this, this._appItemClickCallback),
-				lang.hitch(this, this._webMapItemClickCallback)
+				lang.hitch(this, this._itemClickCallback),
+				lang.hitch(this, this._itemClickCallback)
 			);
 
 			this._queryResultToResultsList = new QueryResultToResultsList(portalItemFactory);
@@ -145,33 +148,8 @@ define([
 				this._results.replaceItems(this._currentResults);
 			}
 		},
-		_appItemClickCallback:function(error, response){
-
-			if(response.action == "openWebApp"){
-				window.open(response.item.Url, '_self');
-			}else{ //openDetails
-				var url = this.config.itemDetailsUrl + "?webmap=" + response.item.Id;
-				window.open(url, '_blank');
-			}
-		},
-		_webMapItemClickCallback:function(error, response){
-
-			if(response.action == "openWebMap"){
-				var exent = "";
-				exent += this.map.extent.xmin + ",";
-				exent += this.map.extent.ymin + ",";
-				exent += this.map.extent.xmax + ",";
-				exent += this.map.extent.ymax + ",";
-				exent += this.map.extent.spatialReference.wkid;
-
-				var url = response.item.Url.replace("{id}", response.item.Id);
-				url += "&extent=" + exent;
-				window.open(url, '_self');
-
-			}else{ //openDetails
-				var url = this.config.itemDetailsUrl + "?webmap=" + response.item.Id;
-				window.open(url, '_blank');
-			}
+		_itemClickCallback:function(error, response){
+			this._launchItem.open(response);
 		},
 		_initialWebMapSearchItemsCallback:function(error, response){
 			if(error){
