@@ -77,14 +77,18 @@ define([
 
 		},
 		_searchTextEnterCallback:function(error, response){
-			// TODO: Implement text search
+			this._retrieveWebMapSearchItems.query = response;
+			this._retrieveWebMapSearchItems.count = this.config.pageSize;
+			this._retrieveWebMapSearchItems.offset = 0;
+			this._retrieveWebMapSearchItems.request(
+				lang.hitch(this, this._currentWebMapSearchItemsCallback));
 		},
 		_searchByCategoryButtonClickCallback:function(error, response){
 			if(this._searchWidget.domNode.parentNode)
 				this.domNode.removeChild(this._searchWidget.domNode);
 
 			this._breadcrumbWidget.clearTrail();
-			this._breadcrumbWidget.addWebMapGroupTitle("Categories");
+			this._breadcrumbWidget.addSecondLabel("Categories");
 			this._breadcrumbWidget.placeAt(this, "first");
 			this._results.replaceItems(this._categories);
 		},
@@ -94,7 +98,7 @@ define([
 				this.domNode.removeChild(this._searchWidget.domNode);
 
 			this._breadcrumbWidget.clearTrail();
-			this._breadcrumbWidget.addWebMapGroupTitle("Districts");
+			this._breadcrumbWidget.addSecondLabel("Districts");
 			this._breadcrumbWidget.placeAt(this, "first");
 			this._results.replaceItems(this._organisations);
 		},
@@ -121,10 +125,10 @@ define([
 		_groupItemClickedCallback:function(error, response){
 
 			if(response.source == "WebMapGroupsForCategories"){
-				this._breadcrumbWidget.addResults(
+				this._breadcrumbWidget.addThirdLabel("Results",
 					lang.hitch(this, this._searchByCategoryButtonClickCallback));
 			}else if (response.source == "WebMapGroupsForOrganisations") {
-				this._breadcrumbWidget.addResults(
+				this._breadcrumbWidget.addThirdLabel("Results",
 					lang.hitch(this, this._searchByOrganisationButtonClickCallback));
 			}
 
@@ -156,39 +160,28 @@ define([
 				this._results.replaceItems(this._defaultResults);
 			}
 		},
+		_currentWebMapSearchItemsCallback:function(error, response){
+			if(error){
+				throw error;
+			}else{
+				var searchResults = response.Results;
+				this._currentResults = this._queryResultToResultsList.addToResultsList(searchResults);
+				this._results.replaceItems(this._currentResults);
+
+				if(this._searchWidget.domNode.parentNode)
+					this.domNode.removeChild(this._searchWidget.domNode);
+
+				this._breadcrumbWidget.clearTrail();
+				this._breadcrumbWidget.addSecondLabel("Results");
+				this._breadcrumbWidget.placeAt(this, "first");
+			}
+		},
 		_homeClickCallback:function(err, response){
 			this._breadcrumbWidget.clearTrail();
 			this.domNode.removeChild(this._breadcrumbWidget.domNode);
 			this._searchWidget.placeAt(this, "first");
 			this._results.replaceItems(this._defaultResults);
 		}
-		// _showPanel:function(panelName){
-		// 	this._removePanelFocus(this._home.domNode);
-		// 	this._removePanelFocus(this._categories.domNode);
-		// 	this._removePanelFocus(this._organisations.domNode);
-		//
-		// 	if(panelName == "Home"){
-		// 		this._setPanelFocus(this._home.domNode);
-		// 	}else if(panelName =="Category"){
-		// 		this._setPanelFocus(this._categories.domNode);
-		// 	}else if(panelName == "Organisation"){
-		// 		this._setPanelFocus(this._organisations.domNode);
-		// 	}
-		// },
-		// _configureAsPanel:function(panelNode){
-		// 	domClass.add(panelNode, "view-stack");
-		// },
-		// _removePanelFocus:function(panelNode){
-		// 	domClass.remove(panelNode, "view-stack-focus");
-		// },
-		// _setPanelFocus:function(panelNode){
-		// 	domClass.add(panelNode, "view-stack-focus");
-		// },
-		// resize: function(){
-		// 	this._home.resize();
-		// 	this._categories.resize();
-		// 	this._organisations.resize();
-		// }
 	});
 });
 

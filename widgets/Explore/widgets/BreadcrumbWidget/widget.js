@@ -11,21 +11,23 @@ define([
     constructor:function(homeCallback){
       this._homeCallback = homeCallback;
     },
-    addWebMapGroupTitle:function(trailLabel){
-      this._WebMapGroupsTitle.textContent = trailLabel;
+    addSecondLabel:function(trailLabel){
+      this._secondLabelTitle.textContent = trailLabel;
     },
-    addResults:function(trailCallback){
-      this._trailCallback = trailCallback;
+    addThirdLabel:function(trailLabel, secondLabelCallback){
+      this._trailCallback = secondLabelCallback;
+      this._thirdLabelTitle.textContent = trailLabel;
     },
     clearTrail:function(){
-      this._WebMapGroupsTitle.textContent = "";
+      this._secondLabelTitle.textContent = "";
       this._trailCallback = null;
+      this._thirdLabelTitle.textContent = "";
     },
     _homeClick:function(e){
       e.preventDefault();
       this._homeCallback(null, e);
     },
-    _WebMapGroupsClick:function(e){
+    _secondLabelClick:function(e){
       e.preventDefault();
 
       if(this._trailCallback){
