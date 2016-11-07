@@ -28,8 +28,25 @@ define([
 				domAttr.set(this.resultImageNode, "src", imgSrc);
 				domAttr.set(this.resultImageNode, "alt", imgSrc);
 				domClass.add(this.resultGlyphiconNode, "glyphicon-phone");
+
+				on(this.resultOpenButtonNode, "click", lang.hitch(this, this._openWebApp));
+				on(this.resultDetailsButtonNode, "click", lang.hitch(this, this._openDetails));
+			},
+			_openWebApp:function(e){
+				e.preventDefault();
+				var response = {
+					item: this._item,
+					action: "openWebMap"
+				};
+				this._callback(null, response);
+			},
+			_openDetails:function(/*Event*/ e){
+				 e.preventDefault();
+				 var response = {
+					 item: this._item,
+					 action: "openDetails"
+				 };
+				 this._callback(null, response);
 			}
 		});
-
-	}
-);
+	});

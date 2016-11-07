@@ -35,7 +35,7 @@ define([
 				lang.hitch(this, this._searchByOrganisationButtonClickCallback));
 			this._searchWidget.placeAt(this);
 
-			this._retrieveWebMapGroupItems = new RetrieveWebMapGroupItems()
+			this._retrieveWebMapGroupItems = new RetrieveWebMapGroupItems();
 			this._retrieveWebMapGroupItems.baseUri = this.config.portalApiUri;
 			this._retrieveWebMapGroupItems.query = "";
 			this._retrieveWebMapGroupItems.count = this.config.pageSize;
