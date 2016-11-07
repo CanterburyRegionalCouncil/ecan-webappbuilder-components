@@ -146,10 +146,32 @@ define([
 			}
 		},
 		_appItemClickCallback:function(error, response){
-			// TODO: Implement app click
+
+			if(response.action == "openWebApp"){
+				window.open(response.item.Url, '_self');
+			}else{ //openDetails
+				var url = this.config.itemDetailsUrl + "?webmap=" + response.item.Id;
+				window.open(url, '_blank');
+			}
 		},
 		_webMapItemClickCallback:function(error, response){
-			// TODO: Implement web map click
+
+			if(response.action == "openWebMap"){
+				var exent = "";
+				exent += this.map.extent.xmin + ",";
+				exent += this.map.extent.ymin + ",";
+				exent += this.map.extent.xmax + ",";
+				exent += this.map.extent.ymax + ",";
+				exent += this.map.extent.spatialReference.wkid;
+
+				var url = response.item.Url.replace("{id}", response.item.Id);
+				url += "&extent=" + exent;
+				window.open(url, '_self');
+
+			}else{ //openDetails
+				var url = this.config.itemDetailsUrl + "?webmap=" + response.item.Id;
+				window.open(url, '_blank');
+			}
 		},
 		_initialWebMapSearchItemsCallback:function(error, response){
 			if(error){
@@ -184,21 +206,3 @@ define([
 		}
 	});
 });
-
-//
-// var exent = "";
-// exent += this._map.extent.xmin + ",";
-// exent += this._map.extent.ymin + ",";
-// exent += this._map.extent.xmax + ",";
-// exent += this._map.extent.ymax + ",";
-// exent += this._map.extent.spatialReference.wkid;
-//
-// var url = this._item.Url.replace("{id}", this._item.Id);
-// url += "&extent=" + exent;
-//
-// window.open(url, '_self');
-
-
-//
-// var url = this._itemDetailsUrl + "?webmap=" + this._item.Id;
-// window.open(url, '_blank');

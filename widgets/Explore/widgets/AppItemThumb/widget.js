@@ -36,7 +36,7 @@ define([
 				e.preventDefault();
 				var response = {
 					item: this._item,
-					action: "openWebMap"
+					action: "openWebApp"
 				};
 				this._callback(null, response);
 			},
