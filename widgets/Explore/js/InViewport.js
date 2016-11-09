@@ -16,17 +16,22 @@ define([
     },
     _isInViewport:function(event){
 
-      var parentExtent = this._parent.getBoundingClientRect();
-      var childExtent = this._child.getBoundingClientRect();
+      if(this._isInDom()){
+        var parentExtent = this._parent.getBoundingClientRect();
+        var childExtent = this._child.getBoundingClientRect();
 
-      if(parentExtent.bottom > childExtent.top){
+        if(parentExtent.bottom > childExtent.top){
 
-        if(this._callback)
-          this._callback(null, true);
-          this._callback = null;
+          if(this._callback)
+            this._callback(null, true);
+            this._callback = null;
 
-        this._scrollListener.remove();
+          this._scrollListener.remove();
+        }
       }
+    },
+    _isInDom:function(){
+      return this._child.parentNode !== null;
     }
   });
 });

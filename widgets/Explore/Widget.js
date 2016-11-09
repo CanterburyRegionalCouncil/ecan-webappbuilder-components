@@ -186,7 +186,6 @@ define([
 		},
 		_showHomeView:function(err, response){
 
-			this.offsetter.clear();
 			this._results.replaceItems(this._defaultResults);
 			this._show.homeView();
 			this._breadCrumbWidget.clearTrail();
@@ -194,7 +193,6 @@ define([
 		},
 		_showCategoryGroupsView:function(error, response){
 
-			this.offsetter.clear();
 			this._breadCrumbWidget.clearTrail();
 			this._breadCrumbWidget.addSecondLabel("Categories");
 			this._results.replaceItems(this._categories);
@@ -203,12 +201,10 @@ define([
 		},
 		_showOrganisationGroupsView:function(error, response){
 
-			this.offsetter.clear();
 			this._breadCrumbWidget.clearTrail();
 			this._breadCrumbWidget.addSecondLabel("Districts");
 			this._results.replaceItems(this._organisations);
 			this._show.organisationsView();
-
-		}
+		},
 	});
 });
