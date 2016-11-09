@@ -1,8 +1,8 @@
 define([
   'dojo/_base/declare',
-  './../widgets/GroupItemThumb/Widget',
-  './../widgets/AppItemThumb/Widget',
-  './../widgets/MapItemThumb/Widget',
+  './../widgets/GroupItemThumb/widget',
+  './../widgets/AppItemThumb/widget',
+  './../widgets/MapItemThumb/widget',
 ],function(declare, GroupThumb, AppThumb, MapThumb){
   return declare("PortalItemFactory",[],{
     constructor:function(options){
