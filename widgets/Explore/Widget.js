@@ -1,9 +1,6 @@
 define([
 		'dojo/_base/declare',
-		'dojo/_base/event',
 		'dojo/_base/lang',
-		'dojo/on',
-		'dojo/dom-class',
 		'jimu/BaseWidget',
 		'esri/config',
 		'./widgets/Search/widget',
@@ -11,176 +8,207 @@ define([
 		'./widgets/Result/widget',
 		'./js/RetrieveWebMapSearchItems',
 		'./js/RetrieveWebMapGroups',
-		'./js/RetrieveWebMapGroupItems', 
+		'./js/RetrieveWebMapGroupItems',
 		'./js/QueryResultToResultsList',
 		'./js/PortalItemFactory',
 		'./js/LaunchItem',
+		'./js/Show',
+		'./js/InViewPort',
 		'xstyle/css!./css/bootstrap3_3_7.css'
-],function(declare, event, lang, on, domClass, BaseWidget, esriConfig,
-	SearchWidget, BreadcrumbWidget, Results, RetrieveWebMapSearchItems,
+],function(declare, lang, BaseWidget, esriConfig,
+	SearchWidget, BreadCrumbWidget, Results, RetrieveWebMapSearchItems,
 	RetrieveWebMapGroups, RetrieveWebMapGroupItems, QueryResponseToResultsList,
-	PortalItemFactory, LaunchItem) {
+	PortalItemFactory, LaunchItem, Show, InViewPort
+){
 
 	return declare([BaseWidget], {
-
 		baseClass: 'gallery-widget',
+		_defaultResults:[],
 		startup: function() {
+
 			this.inherited(arguments);
 
-			this._launchItem = new LaunchItem(this.map, this.config);
+			var options = null;
 
-			this._breadcrumbWidget = new BreadcrumbWidget(
-				lang.hitch(this, this._homeClickCallback));
+			options = {
+				map:this.map,
+				config:this.config
+			};
+			this._launchItem = new LaunchItem(options);
 
-			this._searchWidget = new SearchWidget(
-				lang.hitch(this, this._searchTextEnterCallback),
-				lang.hitch(this, this._searchByCategoryButtonClickCallback),
-				lang.hitch(this, this._searchByOrganisationButtonClickCallback));
+			options = {homeCallback:lang.hitch(this, this._showHomeView)};
+			this._breadCrumbWidget = new BreadCrumbWidget(options);
+
+			options = {
+				searchTextCallback:lang.hitch(this, this._triggerRetrieveWebMapSearchItems),
+				searchByCategoryCallback:lang.hitch(this, this._showCategoryGroupsView),
+				searchByOrganisationCallback:lang.hitch(this, this._showOrganisationGroupsView)
+			};
+
+			this._searchWidget = new SearchWidget(options);
 			this._searchWidget.placeAt(this);
 
-			this._retrieveWebMapGroupItems = new RetrieveWebMapGroupItems();
-			this._retrieveWebMapGroupItems.baseUri = this.config.portalApiUri;
-			this._retrieveWebMapGroupItems.query = "";
-			this._retrieveWebMapGroupItems.count = this.config.pageSize;
-			this._retrieveWebMapGroupItems.offset = 0;
+			options = {
+				groupItemCallback:lang.hitch(this, this._triggerRetrieveWebMapGroupItems),
+				appItemCallback:lang.hitch(this, this._handleItemAction),
+				mapItemCallback:lang.hitch(this, this._handleItemAction)
+			};
 
-			this._retrieveWebMapSearchItems = new RetrieveWebMapSearchItems();
-			this._retrieveWebMapSearchItems.baseUri = this.config.portalApiUri;
-			this._retrieveWebMapSearchItems.query = "";
-			this._retrieveWebMapSearchItems.count = this.config.pageSize;
-			this._retrieveWebMapSearchItems.offset = 0;
-			this._retrieveWebMapSearchItems.request(
-				lang.hitch(this, this._initialWebMapSearchItemsCallback));
-
-			var portalItemFactory = new PortalItemFactory(
-				lang.hitch(this, this._groupItemClickedCallback),
-				lang.hitch(this, this._itemClickCallback),
-				lang.hitch(this, this._itemClickCallback)
-			);
+			var portalItemFactory = new PortalItemFactory(options);
 
 			this._queryResultToResultsList = new QueryResultToResultsList(portalItemFactory);
 
 			this._results = new Results();
 			this._results.placeAt(this, "last");
 
-			this._retrieveWebMapGroupsCategories = new RetrieveWebMapGroups();
-			this._retrieveWebMapGroupsCategories.baseUri = this.config.portalApiUri;
-
+			options = { baseUri:this.config.portalApiUri };
+			this._retrieveWebMapGroupsCategories = new RetrieveWebMapGroups(options);
 			this._retrieveWebMapGroupsCategories.request(
 			 	"WebMapGroupsForCategories",
-			 	lang.hitch(this, this._webMapGroupsForCategoriesCallback)
+			 	lang.hitch(this, this._handleCategoriesGroups)
 			);
 
-			this._retrieveWebMapGroupsOrganisations = new RetrieveWebMapGroups();
-			this._retrieveWebMapGroupsOrganisations.baseUri = this.config.portalApiUri;
+			this._retrieveWebMapGroupsOrganisations = new RetrieveWebMapGroups(options);
 			this._retrieveWebMapGroupsOrganisations.request(
 				"WebMapGroupsForOrganisations",
-				lang.hitch(this, this._webMapGroupsForOrganisationsCallback)
+				lang.hitch(this, this._handleOrganisationsGroups)
 			);
 
-		},
-		_searchTextEnterCallback:function(error, response){
-			this._retrieveWebMapSearchItems.query = response;
-			this._retrieveWebMapSearchItems.count = this.config.pageSize;
+			options = {
+				parentWidget:this,
+	      breadCrumbWidget:this._breadCrumbWidget,
+	      resultsWidget:this._resultsWidget,
+	      searchWidget:this._searchWidget
+			};
+
+			this._show = new Show(options);
+
+			options = {
+				baseUri:this.config.portalApiUri,
+				pageSize:this.config.pageSize
+			};
+
+			this._retrieveWebMapGroupItems = new RetrieveWebMapGroupItems(options);
+			this._retrieveWebMapGroupItems.offset = 0;
+
+			this._retrieveWebMapSearchItems = new RetrieveWebMapSearchItems(options);
+			this._retrieveWebMapSearchItems.query = "";
 			this._retrieveWebMapSearchItems.offset = 0;
 			this._retrieveWebMapSearchItems.request(
-				lang.hitch(this, this._currentWebMapSearchItemsCallback));
-		},
-		_searchByCategoryButtonClickCallback:function(error, response){
-			if(this._searchWidget.domNode.parentNode)
-				this.domNode.removeChild(this._searchWidget.domNode);
+				lang.hitch(this, this._handleDefaultWebMapSearchItems));
+		},_handleDefaultWebMapSearchItems:function(error, response){
+			if(error){throw error;}
 
-			this._breadcrumbWidget.clearTrail();
-			this._breadcrumbWidget.addSecondLabel("Categories");
-			this._breadcrumbWidget.placeAt(this, "first");
-			this._results.replaceItems(this._categories);
-		},
-		_searchByOrganisationButtonClickCallback:function(error, response){
+			var results = response.Results;
+			var resultItems = this._defaultResults
+			this._defaultResults = resultItems.concat(this._queryResultToResultsList.addToResultsList(results));
+			this._results.addItems(this._defaultResults);
 
-			if(this._searchWidget.domNode.parentNode)
-				this.domNode.removeChild(this._searchWidget.domNode);
+			options = {
+				parent:this.domNode.parentNode,
+	    	child:this._defaultResults[this._defaultResults.length-1].domNode,
+	      callback:lang.hitch(this, this._retrieveAdditionalDefaultWebMapSearchItems)
+			};
 
-			this._breadcrumbWidget.clearTrail();
-			this._breadcrumbWidget.addSecondLabel("Districts");
-			this._breadcrumbWidget.placeAt(this, "first");
-			this._results.replaceItems(this._organisations);
+			if(response.TotalCount > this._defaultResults.length)
+				this._inViewPort = new InViewPort(options);
 		},
-		_webMapGroupsForCategoriesCallback:function(error, response){
-			if(error){
+		_retrieveAdditionalDefaultWebMapSearchItems:function(err, response){
+
+			this._retrieveWebMapSearchItems.offset = this._defaultResults.length + this.config.pageSize;
+			this._retrieveWebMapSearchItems.request(
+				lang.hitch(this, this._handleDefaultWebMapSearchItems));
+
+		},_handleCategoriesGroups:function(error, response){
+			if(error)
 				throw error;
-			}else{
-				var searchResults = response;
-				this._categories = this
-					._queryResultToResultsList
-					.addToResultsList(searchResults, "WebMapGroupsForCategories");
-			}
+
+			var searchResults = response;
+			this._categories = this
+				._queryResultToResultsList
+				.addToResultsList(searchResults, "WebMapGroupsForCategories");
 		},
-		_webMapGroupsForOrganisationsCallback:function(error, response){
-			if(error){
+		_handleOrganisationsGroups:function(error, response){
+			if(error)
 				throw error;
-			}else{
-				var searchResults = response;
-				this._organisations = this.
-					_queryResultToResultsList
-					.addToResultsList(searchResults, "WebMapGroupsForOrganisations");
-			}
+
+			var searchResults = response;
+			this._organisations = this.
+				_queryResultToResultsList
+				.addToResultsList(searchResults, "WebMapGroupsForOrganisations");
 		},
-		_groupItemClickedCallback:function(error, response){
+		_triggerRetrieveWebMapSearchItems:function(error, response){
+
+			this._retrieveWebMapSearchItems.query = response;
+			this._retrieveWebMapSearchItems.offset = 0;
+			this._retrieveWebMapSearchItems.request(
+				lang.hitch(this, this._handleWebMapSearchItems));
+		},
+		_triggerRetrieveWebMapGroupItems:function(error, response){
 
 			if(response.source == "WebMapGroupsForCategories"){
-				this._breadcrumbWidget.addThirdLabel("Results",
-					lang.hitch(this, this._searchByCategoryButtonClickCallback));
+				this._breadCrumbWidget.addThirdLabel("Results",
+					lang.hitch(this, this._showCategoryGroupsView));
 			}else if (response.source == "WebMapGroupsForOrganisations") {
-				this._breadcrumbWidget.addThirdLabel("Results",
-					lang.hitch(this, this._searchByOrganisationButtonClickCallback));
+				this._breadCrumbWidget.addThirdLabel("Results",
+					lang.hitch(this, this._showOrganisationGroupsView));
 			}
 
 			this._retrieveWebMapGroupItems.groupID = response.Id;
 			this._retrieveWebMapGroupItems.request(
-				lang.hitch(this, this._webMapGroupItemsClickedCallback));
+				lang.hitch(this, this._handleWebMapGroupItems));
 		},
-		_webMapGroupItemsClickedCallback:function(error, response){
-			if(error){
+		_handleWebMapGroupItems:function(error, response){
+
+			if(error)
 				throw error;
-			}else{
-				var searchResults = response.Results;
-				this._currentResults = this._queryResultToResultsList.addToResultsList(searchResults);
-				this._results.replaceItems(this._currentResults);
-			}
+
+			var searchResults = response.Results;
+			this._currentResults = this._queryResultToResultsList.addToResultsList(searchResults);
+			this._results.replaceItems(this._currentResults);
 		},
-		_itemClickCallback:function(error, response){
+		_handleWebMapSearchItems:function(error, response){
+
+			if(error)
+				throw error;
+
+			var searchResults = response.Results;
+			this._currentResults = this._queryResultToResultsList.addToResultsList(searchResults);
+			this._results.replaceItems(this._currentResults);
+
+			this._breadCrumbWidget.clearTrail();
+			this._breadCrumbWidget.addSecondLabel("Results");
+			this._show.searchItemResultsView();
+
+		},
+		_handleItemAction:function(error, response){
 			this._launchItem.open(response);
 		},
-		_initialWebMapSearchItemsCallback:function(error, response){
-			if(error){
-				throw error;
-			}else{
-				var searchResults = response.Results;
-				this._defaultResults = this._queryResultToResultsList.addToResultsList(searchResults);
-				this._results.replaceItems(this._defaultResults);
-			}
-		},
-		_currentWebMapSearchItemsCallback:function(error, response){
-			if(error){
-				throw error;
-			}else{
-				var searchResults = response.Results;
-				this._currentResults = this._queryResultToResultsList.addToResultsList(searchResults);
-				this._results.replaceItems(this._currentResults);
+		_showHomeView:function(err, response){
 
-				if(this._searchWidget.domNode.parentNode)
-					this.domNode.removeChild(this._searchWidget.domNode);
-
-				this._breadcrumbWidget.clearTrail();
-				this._breadcrumbWidget.addSecondLabel("Results");
-				this._breadcrumbWidget.placeAt(this, "first");
-			}
-		},
-		_homeClickCallback:function(err, response){
-			this._breadcrumbWidget.clearTrail();
-			this.domNode.removeChild(this._breadcrumbWidget.domNode);
-			this._searchWidget.placeAt(this, "first");
+			this.offsetter.clear();
 			this._results.replaceItems(this._defaultResults);
+			this._show.homeView();
+			this._breadCrumbWidget.clearTrail();
+
+		},
+		_showCategoryGroupsView:function(error, response){
+
+			this.offsetter.clear();
+			this._breadCrumbWidget.clearTrail();
+			this._breadCrumbWidget.addSecondLabel("Categories");
+			this._results.replaceItems(this._categories);
+			this._show.categoriesView();
+
+		},
+		_showOrganisationGroupsView:function(error, response){
+
+			this.offsetter.clear();
+			this._breadCrumbWidget.clearTrail();
+			this._breadCrumbWidget.addSecondLabel("Districts");
+			this._results.replaceItems(this._organisations);
+			this._show.organisationsView();
+
 		}
 	});
 });

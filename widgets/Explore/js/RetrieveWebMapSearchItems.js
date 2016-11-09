@@ -4,19 +4,23 @@ define([
   'esri/request'
 ], function(declare, lang, esriRequest){
   return declare("RetrieveWebMapSearchItems", [], {
-    baseUri:"",
-    groupID:"",
-    count:-1,
+    _baseUri:"",
+    _pageSize:-1,
+    query:"",
     offset:-1,
     _callback:null,
+    constructor:function(options){
+      this._baseUri = options.baseUri;
+      this._pageSize = options.pageSize;
+    },
     request:function(callback){
 
       this._callback = callback;
 
-      var requestUri = this.baseUri + "/WebMapSearch";
+      var requestUri = this._baseUri + "/WebMapSearch";
       requestUri+= "?";
       requestUri += "query=" + this.query;
-      requestUri += "&count=" + this.count;
+      requestUri += "&count=" + this._pageSize;
       requestUri += "&offset=" + this.offset;
 
       var requestGroups = esriRequest({

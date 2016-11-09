@@ -7,10 +7,10 @@ define([
   return declare('SearchWidget',[_WidgetBase, _TemplatedMixin],{
     templateString:widgetTemplate,
     _searchTextCallback:null,
-    constructor:function(searchTextCallback, searchByCategoryCallback, searchByOrganisationCallback){
-      this._searchTextCallback = searchTextCallback;
-      this._searchByCategoryCallback = searchByCategoryCallback;
-      this._searchByOrganisationCallback = searchByOrganisationCallback;
+    constructor:function(options){
+      this._searchTextCallback = options.searchTextCallback;
+      this._searchByCategoryCallback = options.searchByCategoryCallback;
+      this._searchByOrganisationCallback = options.searchByOrganisationCallback;
     },
     searchText:function(/* Event */ e){
       this._searchTextCallback(null, this.searchInputNode.value);

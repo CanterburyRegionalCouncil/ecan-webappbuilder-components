@@ -5,10 +5,10 @@ define([
   './../widgets/MapItemThumb/Widget',
 ],function(declare, GroupThumb, AppThumb, MapThumb){
   return declare("PortalItemFactory",[],{
-    constructor:function(groupItemCallback, appItemCallback, mapItemCallback){
-      this._groupItemCallback = groupItemCallback;
-      this._appItemCallback = appItemCallback;
-      this._mapItemCallback = mapItemCallback;
+    constructor:function(options){
+      this._groupItemCallback = options.groupItemCallback;
+      this._appItemCallback = options.appItemCallback;
+      this._mapItemCallback = options.mapItemCallback;
     },
     createItem:function(rawItem){
       var thumb = null;

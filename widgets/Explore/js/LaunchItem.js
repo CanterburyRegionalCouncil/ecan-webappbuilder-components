@@ -4,9 +4,9 @@ define([
     return declare("LaunchItem", [], {
       _map:null,
       _config:null,
-      constructor:function(map, config){
-        this._map = map;
-        this._config = config;
+      constructor:function(options){
+        this._map = options.map;
+        this._config = options.config;
       },
       open:function(response){
 

@@ -8,8 +8,8 @@ define([
     templateString:widgetTemplate,
     _homeCallback:null,
     _trailCallback:null,
-    constructor:function(homeCallback){
-      this._homeCallback = homeCallback;
+    constructor:function(options){
+      this._homeCallback = options.homeCallback;
     },
     addSecondLabel:function(trailLabel){
       this._secondLabelTitle.textContent = trailLabel;

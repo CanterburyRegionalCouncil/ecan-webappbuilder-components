@@ -4,13 +4,16 @@ define([
   'esri/request'
 ], function(declare, lang, esriRequest){
   return declare("RetrieveWebMapGroups",[], {
-    baseUri:"",
+    _baseUri:"",
     _callback:null,
+    constructor:function(options){
+      this._baseUri = options.baseUri;
+    },
     request:function(type, callback){
 
       this._callback = callback;
 
-      var requestUri = this.baseUri + "/" + type;
+      var requestUri = this._baseUri + "/" + type;
       var requestGroups = esriRequest({
         url:requestUri,
         content:{f:"json"}
