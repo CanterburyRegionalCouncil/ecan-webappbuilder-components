@@ -1,20 +1,24 @@
 define([
   'dojo/_base/declare',
   'dojo/_base/lang',
-  'dojo/Evented',
   'esri/request'
-], function(declare, lang, Evented, esriRequest){
-  return declare("RetrieveWebMapSearchItems", [Evented], {
-    baseUri:"",
-    groupID:"",
-    count:-1,
+], function(declare, lang, esriRequest){
+  return declare("RetrieveWebMapSearchItems", [], {
+    _baseUri:"",
+    _pageSize:-1,
+    query:"",
     offset:-1,
-    request:function(){
+    callback:null,
+    constructor:function(options){
+      this._baseUri = options.baseUri;
+      this._pageSize = options.pageSize;
+    },
+    request:function(callback){
 
-      var requestUri = this.baseUri + "/WebMapSearch";
+      var requestUri = this._baseUri + "/WebMapSearch";
       requestUri+= "?";
       requestUri += "query=" + this.query;
-      requestUri += "&count=" + this.count;
+      requestUri += "&count=" + this._pageSize;
       requestUri += "&offset=" + this.offset;
 
       var requestGroups = esriRequest({
@@ -24,11 +28,11 @@ define([
       requestGroups.then(lang.hitch(this, this._response), this._error);
     },
     _response:function(response){
-      var groups = response;
-      this.emit("onItemsRetrievedEvent", groups);
+      var items = response;
+      this.callback(null, items);
     },
     _error:function(error){
-      console.log(error);
+      this.callback(error, null);
     }
   });
 });
