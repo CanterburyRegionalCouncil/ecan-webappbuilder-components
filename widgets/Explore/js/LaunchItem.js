@@ -19,8 +19,11 @@ define([
   				exent += this._map.extent.xmax + ",";
   				exent += this._map.extent.ymax + ",";
   				exent += this._map.extent.spatialReference.wkid;
-
-  				url = response.item.Url.replace("{id}", response.item.Id);
+          
+          // this line below launches the url from api instead of building url relative to WAB location.
+  				//url = response.item.Url.replace("{id}", response.item.Id);
+          //TODO Need to change code so that it reload webmap instead of whole WAB like ECan js viewer version 1.
+          url = "?webmap=" + response.item.Id;
   				url += "&extent=" + exent;
   				window.open(url, '_self');
 
