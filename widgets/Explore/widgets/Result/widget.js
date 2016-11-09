@@ -1,9 +1,10 @@
 define([
 	'dojo/_base/declare',
+	'dojo/dom-class',
 	'dijit/_WidgetBase',
 	'dijit/_TemplatedMixin',
 	'dojo/text!./widget.html',
-],function(declare, _WidgetBase, _TemplatedMixin, widgetTemplate){
+],function(declare, domClass, _WidgetBase, _TemplatedMixin, widgetTemplate){
 
 		return declare('ResultsWidget', [_WidgetBase, _TemplatedMixin],{
 			templateString:widgetTemplate,
@@ -22,9 +23,15 @@ define([
 					this.galleryResultsContainerNode.removeChild(oldItem);
 				}
 
-				for(var i = 0; i < items.length; i++){
-					item = items[i];
-					item.placeAt(this.galleryResultsContainerNode, 'last');
+				if(items.length === 0){
+					domClass.remove(this.alertNode, 'hide');
+				}else{
+					domClass.add(this.alertNode, 'hide');
+
+					for(var j = 0; j < items.length; j++){
+						item = items[j];
+						item.placeAt(this.galleryResultsContainerNode, 'last');
+					}
 				}
 			}
 		});

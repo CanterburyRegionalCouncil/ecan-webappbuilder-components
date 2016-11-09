@@ -102,7 +102,7 @@ define([
 			if(error){throw error;}
 
 			var results = response.Results;
-			var resultItems = this._defaultResults
+			var resultItems = this._defaultResults;
 			this._defaultResults = resultItems.concat(this._queryResultToResultsList.addToResultsList(results));
 			this._results.addItems(this._defaultResults);
 
@@ -152,7 +152,7 @@ define([
 
 			this._retrieveWebMapGroupItems.groupID = response.Id;
 			this._retrieveWebMapGroupItems.offset = 0;
-			this._retrieveWebMapGroupItems.callback = lang.hitch(this, this._handleWebMapGroupItems)
+			this._retrieveWebMapGroupItems.callback = lang.hitch(this, this._handleWebMapGroupItems);
 
 			this._currentSearchTarget = this._retrieveWebMapGroupItems;
 			this._currentResults = [];
@@ -164,7 +164,7 @@ define([
 			this._inViewPort.stop();
 			this._retrieveWebMapSearchItems.query = response;
 			this._retrieveWebMapSearchItems.offset = 0;
-			this._retrieveWebMapSearchItems.callback = lang.hitch(this, this._handleWebMapSearchItems)
+			this._retrieveWebMapSearchItems.callback = lang.hitch(this, this._handleWebMapSearchItems);
 
 			this._currentSearchTarget = this._retrieveWebMapSearchItems;
 			this._currentResults = [];
@@ -202,7 +202,7 @@ define([
 				throw error;
 
 			var searchResults = response.Results;
-			var resultItems = this._currentResults
+			var resultItems = this._currentResults;
 			this._currentResults = resultItems.concat(this._queryResultToResultsList.addToResultsList(searchResults));
 			this._results.addItems(this._currentResults);
 
