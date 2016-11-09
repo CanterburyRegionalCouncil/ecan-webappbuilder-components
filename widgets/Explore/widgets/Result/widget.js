@@ -14,7 +14,7 @@ define([
 			updatePagination:true,
 			itemDetailsUrl:null,
 			webMaps:null,
-			replaceItems:function(items){
+			addItems:function(items){
 
 				var oldItems = this.galleryResultsContainerNode.children;
 				for(var i=oldItems.length-1 ; i>=0 ; i--){
@@ -22,9 +22,6 @@ define([
 					this.galleryResultsContainerNode.removeChild(oldItem);
 				}
 
-				this.addItems(items);
-			},
-			addItems:function(items){
 				for(var i = 0; i < items.length; i++){
 					item = items[i];
 					item.placeAt(this.galleryResultsContainerNode, 'last');

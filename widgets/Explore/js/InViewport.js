@@ -14,6 +14,9 @@ define([
 
       this._scrollListener = on(this._parent, "scroll", lang.hitch(this,this._isInViewport));
     },
+    stop:function(){
+      this._scrollListener.remove();
+    },
     _isInViewport:function(event){
 
       if(this._isInDom()){

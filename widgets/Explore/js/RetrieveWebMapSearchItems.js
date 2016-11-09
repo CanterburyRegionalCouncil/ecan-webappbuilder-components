@@ -8,14 +8,12 @@ define([
     _pageSize:-1,
     query:"",
     offset:-1,
-    _callback:null,
+    callback:null,
     constructor:function(options){
       this._baseUri = options.baseUri;
       this._pageSize = options.pageSize;
     },
     request:function(callback){
-
-      this._callback = callback;
 
       var requestUri = this._baseUri + "/WebMapSearch";
       requestUri+= "?";
@@ -31,10 +29,10 @@ define([
     },
     _response:function(response){
       var items = response;
-      this._callback(null, items);
+      this.callback(null, items);
     },
     _error:function(error){
-      this._callback(error, null);
+      this.callback(error, null);
     }
   });
 });

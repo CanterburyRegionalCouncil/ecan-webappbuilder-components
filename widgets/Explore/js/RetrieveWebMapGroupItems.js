@@ -8,14 +8,12 @@ define([
     _pageSize:-1,
     groupID:"",
     offset:-1,
-    _callback:null,
+    callback:null,
     constructor:function(options){
       this._baseUri = options.baseUri;
       this._pageSize = options.pageSize;
     },
-    request:function(callback){
-
-      this._callback = callback;
+    request:function(){
 
       var requestUri = this._baseUri + "/WebMapsForGroup";
       requestUri+= "?";
@@ -31,10 +29,10 @@ define([
     },
     _response:function(response){
       var groups = response;
-      this._callback(null, groups);
+      this.callback(null, groups);
     },
     _error:function(error){
-      this._callback(groups, null);
+      this.callback(groups, null);
     }
   });
 });
