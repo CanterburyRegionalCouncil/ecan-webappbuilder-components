@@ -23,13 +23,12 @@ define([
 				this.set("title", this._item.Title);
 				this.set("itemCount", this._item.Items + " maps & apps");
 
-
 				if(this._item.Thumbnail){
 					var id = this._item.Id;
 					var thumbnail = this._item.Thumbnail;
 
-					this.set("imageAlt", this._item.Title);
-					this.set("imageUrl", "http://www.arcgis.com/sharing/rest/community/groups/" + id + "/info/" + thumbnail);
+					domAttr.set(this.imageNode,"alt" , this._item.Title);
+					domAttr.set(this.imageNode,"src" , "http://www.arcgis.com/sharing/rest/community/groups/" + id + "/info/" + thumbnail);
 
 					domClass.remove(this.parameterImageNode, 'hide');
 				}
