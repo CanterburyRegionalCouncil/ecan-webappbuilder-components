@@ -43,7 +43,8 @@ define([
 			options = {
 				searchTextCallback:lang.hitch(this, this._triggerRetrieveWebMapSearchItems),
 				searchByCategoryCallback:lang.hitch(this, this._showCategoryGroupsView),
-				searchByOrganisationCallback:lang.hitch(this, this._showOrganisationGroupsView)
+				searchByOrganisationCallback:lang.hitch(this, this._showOrganisationGroupsView),
+				description:this.config.description,
 			};
 
 			this._searchWidget = new SearchWidget(options);
