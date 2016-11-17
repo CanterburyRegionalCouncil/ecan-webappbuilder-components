@@ -18,12 +18,15 @@ define([
       this.searchDescriptionNode.textContent = this._description;
     },
     searchText:function(/* Event */ e){
+      e.preventDefault();
       this._searchTextCallback(null, this.searchInputNode.value);
     },
     searchByCategory:function(/* Event */ e){
+      e.preventDefault();
       this._searchByCategoryCallback(null, true);
     },
     searchByOrganisation:function(/* Event */ e){
+      e.preventDefault();
       this._searchByOrganisationCallback(null, true);
     }
   });
