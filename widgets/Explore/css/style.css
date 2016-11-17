@@ -53,7 +53,13 @@ div.hide{
 }
 
 div.gallery-parameter-title {
-  line-height: 32px;
+  line-height: 50px;
+  font-size: larger;
+}
+
+.badge{
+  font-size: larger;
+  margin-top: 25px;
 }
 
 div .gallery-results-container, 
@@ -313,4 +319,9 @@ div.search-item-container .Weight4{
 
 div.search-item-container .Weight5{
 	font-size: 10px;
+}
+
+img.DistrictOrgImage{
+  height:50px;
+  padding:3px;
 }
