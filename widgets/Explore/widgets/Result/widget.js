@@ -28,6 +28,8 @@ define([
 				}else{
 					domClass.add(this.alertNode, 'hide');
 
+					var item = null;
+					
 					for(var j = 0; j < items.length; j++){
 						item = items[j];
 						item.placeAt(this.galleryResultsContainerNode, 'last');

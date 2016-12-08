@@ -2,5 +2,5 @@
   "portalApiUri": "http://canterburymapstest.azurewebsites.net/Umbraco/Api/CanterburyMapsApi",
 	"description": "The gallery contains a list of interactive maps that display information on a variety of subjects and purpose built custom applications (apps) such as story maps that have been built for a specific purpose.",
   "pageSize": 6,
-  "itemDetailsUrl": "http://canterburymapstest.azurewebsites.net/map"
+  "itemDetailsUrl": "http://canterburymapstest.azurewebsites.net/map" 
 }

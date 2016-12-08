@@ -19,11 +19,11 @@ define([
 			startup:function(){
 				this.inherited(arguments);
 
-				this.resultTitleNode.textContent = item.Title;
-				this.resultTitleSnippet.textContent = item.Snippet;
+				this.resultTitleNode.textContent = this._item.Title;
+				this.resultTitleSnippet.textContent = this._item.Snippet;
 
 				var imgSrc = "http://www.arcgis.com/sharing/rest/content/items/" +
-					item.Id + "/info/" + item.ThumbnailUrl;
+					this._item.Id + "/info/" + this._item.ThumbnailUrl;
 
 				domAttr.set(this.resultImageNode, "src", imgSrc);
 				domAttr.set(this.resultImageNode, "alt", imgSrc);
